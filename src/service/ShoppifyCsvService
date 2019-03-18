@@ -1,0 +1,5 @@
+from src.domain.ShoppifyCsv import ShoppifyCsv
+
+
+def fill_csv(shoppifyCsv: ShoppifyCsv):
+    print(shoppifyCsv)

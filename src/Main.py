@@ -1,4 +1,8 @@
+from src.Config import initialise_configurations
+
+
 def main():
-    print('Start scraping')
+    initialise_configurations()
+
 
 main()
