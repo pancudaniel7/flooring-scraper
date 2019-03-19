@@ -2,6 +2,8 @@ import datetime
 import logging
 import os
 
+TEMPLATE_FILE_NAME = 'product-template.csv'
+
 
 def root_dir():
     return os.path.dirname(os.path.abspath(__file__ + '../../')) + '/'
@@ -13,6 +15,10 @@ def resource_dir():
 
 def log_dir():
     return resource_dir() + 'log/'
+
+
+def csv_template_dir():
+    return resource_dir() + 'csv-template/'
 
 
 logger = logging.getLogger()
