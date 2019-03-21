@@ -1,6 +1,6 @@
 import csv
 from src.Config import logger
-from src.domain.ShoppifyCsv import ShoppifyCsv
+from src.model.ShoppifyCsv import ShoppifyCsv
 
 
 def append_csv_row(csv_file_path: str, shoppifyCsv: ShoppifyCsv):
