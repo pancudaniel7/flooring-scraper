@@ -3,9 +3,11 @@ from src.service.JohnsonScrapingService import get_all_products_urls
 
 
 def main():
-    initialise_configurations()
-    print(get_all_products_urls())
+    try:
+        initialise_configurations()
+        print(get_all_products_urls())
+    except Exception as e:
+        logger.error('Error: ' + e)
 
 
 main()
-
