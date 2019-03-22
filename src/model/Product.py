@@ -1,7 +1,8 @@
 class Product(object):
-    def __init__(self, imageVariants, title, vendor, product_code, product_type, construction, species, texture,
+    def __init__(self, image, imageVariants, title, vendor, product_code, product_type, construction, species, texture,
                  colorTone, style, floorWidth, thickness, length, venner, finish, gloss, edgeStyle, colorVariation,
                  warranty, installationType, weight, country):
+        self.image = image
         self.imageVariants = imageVariants
         self.title = title
         self.vendor = vendor

@@ -1,13 +1,12 @@
 from src.Config import logger, initialise_configurations
-from src.service.JohnsonScrapingService import get_all_products_urls
+from src.service.JohnsonScrapingService import get_products_details
 
 
 def main():
-    try:
+
         initialise_configurations()
-        print(get_all_products_urls())
-    except Exception as e:
-        logger.error('Error: ' + e)
+        get_products_details()
+
 
 
 main()
