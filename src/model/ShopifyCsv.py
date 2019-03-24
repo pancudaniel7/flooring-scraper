@@ -1,4 +1,4 @@
-class ShoppifyCsv(object):
+class ShopifyCsv(object):
     def __init__(self, handle='', title='Title', body='Description', vendor='', type='', tags='',
                  published='TRUE', option1Name='',
                  option1Value='', option2Name='',

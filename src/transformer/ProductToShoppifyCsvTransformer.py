@@ -1,9 +1,9 @@
 from src.model.Product import Product
-from src.model.ShoppifyCsv import ShoppifyCsv
+from src.model.ShopifyCsv import ShopifyCsv
 
 
 def product_to_shopify(product: Product):
-    shoppifyCsv = ShoppifyCsv()
+    shoppifyCsv = ShopifyCsv()
     shoppifyCsv.imageSrc = product.image
     shoppifyCsv.variantImage = product.imageVariants
     shoppifyCsv.handle = product.title

@@ -33,4 +33,4 @@ def get_tags_text(selector: str, soup: BeautifulSoup):
 
 
 def get_inner_html(selector: str, soup: BeautifulSoup):
-    return str(soup.select(selector)[0])
+    return str(soup.select(selector)[0]).replace('\n', '').replace('\r', '')

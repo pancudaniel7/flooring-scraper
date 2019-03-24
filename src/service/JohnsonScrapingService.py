@@ -24,7 +24,8 @@ def get_all_categories_products_urls(session: Session, url: str):
 def get_product_details(session: Session, product_url: str):
     soup = get_page_soup(session, product_url)
     image = get_all_images_urls('#product-gallery .item.active .image-wrapper', soup)[0]
-    variant_images = ",".join(get_all_images_urls('#product-gallery .item .image-wrapper', soup))
+    # TODO: Fix variant images to get all
+    variant_images = get_all_images_urls('#product-gallery .item .image-wrapper', soup)[0]
     title = get_tag_text('.main .container .header-wrapper h1', soup)
     product_code = get_tag_text('.main .container .header-wrapper h1 + span', soup)
     product_details = get_inner_html('.main .entry-content.container .details', soup)
