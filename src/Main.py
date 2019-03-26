@@ -1,6 +1,6 @@
 from src.Config import logger, initialise_configurations, csv_template_dir
-from src.service.JohnsonScrapingService import get_products_details, JOHNSOON_CSV_FILE_NAME
-from src.service.ShoppifyCsvService import append_csv_array_to_file
+from src.service.supplier.JohnsonScrapingService import get_products_details, JOHNSOON_CSV_FILE_NAME
+from src.service.shopify.CsvService import append_csv_array_to_file
 from src.transformer.ProductToShoppifyCsvTransformer import product_to_shopify
 
 

@@ -25,7 +25,7 @@ logger = logging.getLogger()
 
 
 def logging_config():
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
 
     fileHandler = logging.FileHandler(
         '{0}/{1}.log'.format(log_dir(), datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
@@ -35,7 +35,7 @@ def logging_config():
 
     consoleHandler = logging.StreamHandler()
     consoleHandler.setFormatter(logFormatter)
-    # logger.addHandler(consoleHandler)
+    logger.addHandler(consoleHandler)
     logger.debug('Finish logger configuration setup')
 
 
