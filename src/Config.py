@@ -25,7 +25,7 @@ logger = logging.getLogger()
 
 
 def logging_config():
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
 
     fileHandler = logging.FileHandler(
         '{0}/{1}.log'.format(log_dir(), datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
