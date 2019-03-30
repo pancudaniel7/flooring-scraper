@@ -4,13 +4,16 @@ from requests import Session
 
 def get_page_soup(session: Session, url: str):
     page = session.get(url)
-    soup = BeautifulSoup(page.content, features="lxml")
-    return soup
+    return BeautifulSoup(page.content, features="lxml")
+
+
+def get_soup_by_page_content(page: str):
+    return BeautifulSoup(page, features="lxml")
 
 
 def all_href_urls(selector: str, soup: BeautifulSoup):
-    tags = soup.select(selector + ' a')
-    return [a['href'] for a in tags]
+    elements = soup.select(selector + ' a')
+    return [a['href'] for a in elements]
 
 
 def all_images_urls(selector: str, soup: BeautifulSoup):

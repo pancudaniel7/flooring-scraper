@@ -3,19 +3,19 @@ from requests import Session
 
 from src.Config import logger
 from src.model.Product import Product
-from src.service.common.CollectImageService import image_resolution_size, first_img_url_under_pixel_limit, \
+from src.service.common.CollectorImageService import first_img_url_under_pixel_limit, \
     SHOPIFY_MEGA_PIXELS_IMAGE_RESOLUTION_LIMIT
-from src.service.common.CollectService import all_href_urls, get_page_soup, all_images_urls, tag_text, \
+from src.service.common.CollectorService import all_href_urls, get_page_soup, all_images_urls, tag_text, \
     inner_html_str, tags_text
 
 PRODUCTS_URL = 'http://johnsonhardwood.com/products/'
-JOHNSOON_VENDOR_NAME = 'Johnson Hardwood'
-JOHNSOON_CSV_FILE_NAME = 'johnson-hardwood-template.csv'
+VENDOR_NAME = 'Johnson Hardwood'
+CSV_FILE_NAME = 'johnson-hardwood-template.csv'
 
 
 def get_all_categories_products_urls(session: Session, url: str):
     category_urls = all_href_urls('#filter-container .serieses', get_page_soup(session, url))
-    logger.debug('Finish getting category urls from: ' + PRODUCTS_URL)
+    logger.debug('Finish getting category urls from: ' + url)
 
     products_urls = []
     for category_url in category_urls:
@@ -35,7 +35,7 @@ def get_product_details(session: Session, product_url: str):
     tags = ", ".join(tags_text('.main .entry-content.container .details span', soup))
 
     return Product(image, variant_image_url,
-                   title, JOHNSOON_VENDOR_NAME,
+                   title, VENDOR_NAME,
                    product_code, '',
                    product_details, tags)
 
