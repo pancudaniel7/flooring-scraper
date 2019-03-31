@@ -16,7 +16,7 @@ VENDOR_NAME = 'Mohawk Flooring'
 CARPET_CSV_FILE_NAME = 'mohawk-flooring-carpet-template.csv'
 WOOD_CSV_FILE_NAME = 'mohawk-flooring-wood-template.csv'
 
-TIME_OUT_DYNAMIC_DELAY = 5
+TIME_OUT_DYNAMIC_DELAY = 2
 
 
 def get_product_categories_urls_for_page(driver: WebDriver, url: str, page_number: int):
@@ -31,18 +31,25 @@ def get_product_categories_urls_for_page(driver: WebDriver, url: str, page_numbe
 
 
 def get_all_product_category_urls(driver: WebDriver, url: str):
-    categories = []
+    category_urls = []
     i = 1
     while True:
         response = get_product_categories_urls_for_page(driver, url, i)
         if response is None:
-            return categories
+            return category_urls
         i += 1
-        categories.extend(response)
+        category_urls.extend(response)
+
+
+def get_product_urls(driver: WebDriver, category_urls: []):
+    products_urls = []
+    for category_url in category_urls:
+        pass
 
 
 def get_wood_products_details():
     driver = webdriver.WebDriver()
     category_urls = get_all_product_category_urls(driver, WOOD_URL)
+
     driver.quit()
     return None
