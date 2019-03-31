@@ -11,6 +11,11 @@ def get_soup_by_page_content(page: str):
     return BeautifulSoup(page, features="lxml")
 
 
+def all_attributes_for_all_elements(selector: str, attribute: str, soup: BeautifulSoup):
+    elements = soup.select(selector)
+    return [e[attribute] for e in elements]
+
+
 def all_href_urls(selector: str, soup: BeautifulSoup):
     elements = soup.select(selector + ' a')
     return [a['href'] for a in elements]
