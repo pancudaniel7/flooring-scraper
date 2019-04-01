@@ -3,7 +3,7 @@ from selenium.webdriver.phantomjs.webdriver import WebDriver
 
 from src.Config import logger
 from src.service.common.CollectorService import get_soup_by_page_content, all_href_urls, \
-    all_attributes_for_all_elements, tag_text
+    all_attributes_for_all_elements, tag_text, tags_text
 from src.service.common.SeleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'https://www.mohawkflooring.com'
@@ -49,7 +49,7 @@ def get_category_product_url(driver: WebDriver, category_url: str):
     data_style_ids = all_attributes_for_all_elements('.slider-container div>a', 'data-style-id', soup)
     data_color_ids = all_attributes_for_all_elements('.slider-container div>a', 'data-color-id', soup)
     product_category_title = tag_text('.column.main-info h2', soup).replace(' ', '-')
-
+    products_tiles = [text.replace(' ', '-') for text in tags_text('.slider-container span[class^="ng-binding"]', soup)]
     return None
 
 
