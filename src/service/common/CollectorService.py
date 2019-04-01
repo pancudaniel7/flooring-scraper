@@ -27,7 +27,7 @@ def all_images_urls(selector: str, soup: BeautifulSoup):
 
 
 def tag_text(selector: str, soup: BeautifulSoup):
-    return soup.select(selector)[0].text
+    return soup.select(selector)[0].text.strip()
 
 
 def tags_text(selector: str, soup: BeautifulSoup):

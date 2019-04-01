@@ -3,7 +3,7 @@ from selenium.webdriver.phantomjs.webdriver import WebDriver
 
 from src.Config import logger
 from src.service.common.CollectorService import get_soup_by_page_content, all_href_urls, \
-    all_attributes_for_all_elements, inner_html_str
+    all_attributes_for_all_elements, tag_text
 from src.service.common.SeleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'https://www.mohawkflooring.com'
@@ -46,10 +46,12 @@ def get_category_product_url(driver: WebDriver, category_url: str):
     driver.get(category_url)
     page_content = get_page_source_until_selector(driver, '#related-color', TIME_OUT_DYNAMIC_DELAY)
     soup = get_soup_by_page_content(page_content)
-    data_style_ids = all_attributes_for_all_elements('.slider-container a>img', 'data-style-id', soup)
-    data_color_ids = all_attributes_for_all_elements('.slider-container a>img', 'data-color-id', soup)
-    product_category_title = inner_html_str('.ng-binding', soup)
+    data_style_ids = all_attributes_for_all_elements('.slider-container div>a', 'data-style-id', soup)
+    data_color_ids = all_attributes_for_all_elements('.slider-container div>a', 'data-color-id', soup)
+    product_category_title = tag_text('.column.main-info h2', soup).replace(' ', '-')
+
     return None
+
 
 def get_product_urls(driver: WebDriver, category_urls: []):
     products_urls = []
@@ -61,6 +63,6 @@ def get_wood_products_details():
     driver = webdriver.WebDriver()
     # category_urls = get_all_product_category_urls(driver, WOOD_URL)
     get_category_product_url(driver,
-                             'https://www.mohawkflooring.com/laminate-wood/detail/14859-183064/Elderwood-Aged-Copper-Oak')
+                             'https://www.mohawkflooring.com/engineered-wood/detail/370-2291/Brookedale-Soft-Scrape-Uniclic-Cognac-Maple')
     driver.quit()
     return None
