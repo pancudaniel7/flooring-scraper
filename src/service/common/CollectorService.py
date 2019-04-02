@@ -7,8 +7,8 @@ def get_page_soup(session: Session, url: str):
     return BeautifulSoup(page.content, features="lxml")
 
 
-def get_soup_by_page_content(page: str):
-    return BeautifulSoup(page, features="lxml")
+def get_soup_by_content(page_content: str):
+    return BeautifulSoup(page_content, features="lxml")
 
 
 def all_attributes_for_all_elements(selector: str, attribute: str, soup: BeautifulSoup):
@@ -35,4 +35,4 @@ def tags_text(selector: str, soup: BeautifulSoup):
 
 
 def inner_html_str(selector: str, soup: BeautifulSoup):
-    return str(soup.select(selector)[0]).replace('\n', '').replace('\r', '')
+    return str(soup.select(selector)[0]).replace('\r', '').replace('\n', '')
