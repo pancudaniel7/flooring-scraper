@@ -13,10 +13,6 @@ def resource_dir():
     return root_dir() + 'resources/'
 
 
-def log_dir():
-    return resource_dir() + 'log/'
-
-
 def csv_template_dir():
     return resource_dir() + 'csv-template/'
 
@@ -27,15 +23,15 @@ logger = logging.getLogger()
 def logging_config():
     logger.setLevel(logging.DEBUG)
 
-    fileHandler = logging.FileHandler(
-        '{0}/{1}.log'.format(log_dir(), datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
-    logFormatter = logging.Formatter('%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s')
-    fileHandler.setFormatter(logFormatter)
-    logger.addHandler(fileHandler)
+    file_handler = logging.FileHandler(
+        '{0}/{1}.log'.format(resource_dir(), datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    log_formatter = logging.Formatter('%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s')
+    file_handler.setFormatter(log_formatter)
+    logger.addHandler(file_handler)
 
-    consoleHandler = logging.StreamHandler()
-    consoleHandler.setFormatter(logFormatter)
-    logger.addHandler(consoleHandler)
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(log_formatter)
+    logger.addHandler(console_handler)
     logger.debug('Finish logger configuration setup')
 
 

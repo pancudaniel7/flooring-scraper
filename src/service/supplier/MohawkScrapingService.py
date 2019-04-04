@@ -3,6 +3,7 @@ from selenium.webdriver.phantomjs.webdriver import WebDriver
 
 from src.Config import logger
 from src.model.Product import Product
+from src.service.common import HTMLTemplateService
 from src.service.common.CollectorService import get_soup_by_content, all_href_urls, \
     all_attributes_for_all_elements, tag_text, tags_text, inner_html_str, all_images_urls
 from src.service.common.SeleniumCollectorService import get_page_source_until_selector
@@ -81,6 +82,13 @@ def get_all_product_urls(driver: WebDriver, category_urls: [], category_base_url
     return products_urls
 
 
+def extract_product_details_from_html(content_html: str):
+    soup = get_soup_by_content(content_html)
+    labels = tags_text('.key', soup)
+    values = tags_text('.val', soup)
+    return [labels, values]
+
+
 def get_product_details(driver: WebDriver, product_url: str):
     try:
         driver.get(product_url)
@@ -89,10 +97,13 @@ def get_product_details(driver: WebDriver, product_url: str):
         image = all_attributes_for_all_elements('.swatch-image', 'back-img', soup)[0]
         product_category_title = tag_text('.column.main-info h2', soup)
         product_title = tag_text('.product-details .column.swatches-section h2', soup)
-        details = inner_html_str('.content .specifications-table', soup)
-        soup = get_soup_by_content(details)
+        product_details = inner_html_str('.content .specifications-table', soup)
+        product_details_fields = extract_product_details_from_html(product_details)
+        product_details = HTMLTemplateService.create_product_details_template(product_details_fields[0],
+                                                                              product_details_fields[1])
         tags = ",".join(tags_text('.val span', soup))
-        return Product(image, image, product_category_title + ' ' + product_title, VENDOR_NAME, '', '', details, tags)
+        return Product(image, image, product_category_title + ' ' + product_title, VENDOR_NAME, '', '', product_details,
+                       tags)
     except Exception as e:
         logger.error('Fail to get product details for product with url: {} and exception: {}'.format(product_url, e))
         return None
@@ -107,8 +118,8 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
 
 def get_wood_products_details():
     driver = webdriver.WebDriver()
-    # category_urls = get_all_product_category_urls(driver, WOOD_CATEGORY_BASE_URL)
-    # product_urls = get_all_product_urls(driver, category_urls, WOOD_PRODUCT_BASE_URL)
-    product_details = get_all_products_details(driver, ['https://www.mohawkflooring.com/laminate-wood/detail/14859-183064/Elderwood-Aged-Copper-Oak'])
+    category_urls = get_all_product_category_urls(driver, WOOD_CATEGORY_BASE_URL)
+    product_urls = get_all_product_urls(driver, category_urls, WOOD_PRODUCT_BASE_URL)
+    product_details = get_all_products_details(driver, product_urls)
     driver.quit()
     return product_details
