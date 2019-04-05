@@ -5,26 +5,30 @@ from src.Config import logger
 from src.model.Product import Product
 from src.service.common import HTMLTemplateService
 from src.service.common.CollectorService import get_soup_by_content, all_href_urls, \
-    all_attributes_for_all_elements, tag_text, tags_text, inner_html_str, all_images_urls
+    all_attributes_for_all_elements, tag_text, tags_text, inner_html_str
 from src.service.common.SeleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'https://www.mohawkflooring.com'
-CARPET_URL = BASE_URL + '/carpet/search?page='
 
 WOOD_CATEGORY_BASE_URL = BASE_URL + '/wood/search?page='
 WOOD_PRODUCT_BASE_URL = '/engineered-wood/detail'
+WOOD_CSV_FILE_NAME = 'mohawk-flooring-wood-template.csv'
 
-VINYL_URL = BASE_URL + '/vinyl/search?page='
-TILE_URL = BASE_URL + '/tile/search?page='
+VINYL_CATEGORY_BASE_URL = BASE_URL + '/vinyl/search?page='
+VINYL_PRODUCT_BASE_URL = '/luxury-vinyl-tile/detail'
+VINYL_CSV_FILE_NAME = 'mohawk-flooring-vinyl-template.csv'
+
+TILE_CATEGORY_BASE_URL = BASE_URL + '/tile/search?page='
+TILE_PRODUCT_BASE_URL = '/tile/detail'
+TILE_CSV_FILE_NAME = 'mohawk-flooring-tile-template.csv'
+
 RUGS_URL = BASE_URL + '/rugs/search?page='
 
 VENDOR_NAME = 'Mohawk Flooring'
-CARPET_CSV_FILE_NAME = 'mohawk-flooring-carpet-template.csv'
-WOOD_CSV_FILE_NAME = 'mohawk-flooring-wood-template.csv'
 
-TIME_OUT_DYNAMIC_DELAY = 2
-TIME_OUT_PRODUCT_DELAY = 1
-TIME_OUT_CATEGORY_URL_DELAY = 5
+TIME_OUT_DYNAMIC_DELAY = 5
+TIME_OUT_PRODUCT_DELAY = 3
+TIME_OUT_CATEGORY_URL_DELAY = 10
 
 
 def get_product_category_urls_per_page(driver: WebDriver, url: str, page_number: int):
@@ -120,6 +124,24 @@ def get_wood_products_details():
     driver = webdriver.WebDriver()
     category_urls = get_all_product_category_urls(driver, WOOD_CATEGORY_BASE_URL)
     product_urls = get_all_product_urls(driver, category_urls, WOOD_PRODUCT_BASE_URL)
+    product_details = get_all_products_details(driver, product_urls)
+    driver.quit()
+    return product_details
+
+
+def get_vinyl_products_details():
+    driver = webdriver.WebDriver()
+    category_urls = get_all_product_category_urls(driver, VINYL_CATEGORY_BASE_URL)
+    product_urls = get_all_product_urls(driver, category_urls, VINYL_PRODUCT_BASE_URL)
+    product_details = get_all_products_details(driver, product_urls)
+    driver.quit()
+    return product_details
+
+
+def get_tile_products_details():
+    driver = webdriver.WebDriver()
+    category_urls = get_all_product_category_urls(driver, TILE_CATEGORY_BASE_URL)
+    product_urls = get_all_product_urls(driver, category_urls, TILE_PRODUCT_BASE_URL)
     product_details = get_all_products_details(driver, product_urls)
     driver.quit()
     return product_details

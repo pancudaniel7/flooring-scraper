@@ -8,4 +8,4 @@ def append_csv_array_to_file(csv_file_path: str, shoppify_csv_array: list):
         writer = csv.writer(csv_file)
         for csv_row in shoppify_csv_array:
             writer.writerow(csv_row.__dict__.values())
-            logger.debug('Inserted row to csv: {}'.format(csv_row.__dict__.values()))
+            logger.debug('Inserted in to csv file {} row: {}'.format(csv_file.name, csv_row.__dict__.values()))
