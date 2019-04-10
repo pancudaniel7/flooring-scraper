@@ -4,7 +4,7 @@ from src.service.common.CollectorService import get_soup_by_content, tags_text
 def create_product_details_template(labels: [], values: []):
     html_content: str = '<div>'
     for label, value in zip(labels, values):
-        html_content += '<div><strong>{}: </strong></div><div><span>{}</span></div>'.format(label, value)
+        html_content += '<div><strong>{}: </strong><span>{}</span></div>'.format(label, value)
     html_content += '</div>'
     return html_content
 

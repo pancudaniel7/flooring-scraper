@@ -1,6 +1,7 @@
 from src.Config import logger, initialise_configurations, csv_template_dir
 from src.service.shopify import CsvService
-from src.service.supplier import JohnsonScrapingService, MohawkScrapingService, RegalScrapingService
+from src.service.supplier import JohnsonScrapingService, MohawkScrapingService, RegalScrapingService, \
+    KnoasScrapingService
 from src.transformer import ProductToShopifyCsvTransformer
 
 
@@ -34,9 +35,15 @@ def main():
     #                                     shopify_csv_array)
 
     # Regal Hardwood
-    products_details = RegalScrapingService.get_products_details()
+    # products_details = RegalScrapingService.get_products_details()
+    # shopify_csv_array = [ProductToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
+    # CsvService.append_csv_array_to_file(csv_template_dir() + RegalScrapingService.REGAL_CSV_FILE_NAME,
+    #                                     shopify_csv_array)
+
+    # Knoas products
+    products_details = KnoasScrapingService.get_products_details()
     shopify_csv_array = [ProductToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
-    CsvService.append_csv_array_to_file(csv_template_dir() + RegalScrapingService.REGAL_CSV_FILE_NAME,
+    CsvService.append_csv_array_to_file(csv_template_dir() + KnoasScrapingService.KNOAS_CSV_FILE_NAME,
                                         shopify_csv_array)
 
     logger.info('Finish')

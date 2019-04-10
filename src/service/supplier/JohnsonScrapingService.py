@@ -34,7 +34,7 @@ def get_product_details(session: Session, product_url: str):
     product_details = inner_html_str('.main .entry-content.container .details', soup)
     tags = ", ".join(tags_text('.main .entry-content.container .details span', soup))
 
-    return Product(image, variant_image_url,
+    return Product(title, image, variant_image_url,
                    title, VENDOR_NAME,
                    product_code, '',
                    product_details, tags)

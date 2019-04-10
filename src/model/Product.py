@@ -1,5 +1,6 @@
 class Product(object):
-    def __init__(self, image, imageVariants, title, vendor, product_code, product_type, details, tags):
+    def __init__(self, id, image, imageVariants, title, vendor, product_code, product_type, details, tags):
+        self.id = id
         self.image = image
         self.imageVariants = imageVariants
         self.title = title

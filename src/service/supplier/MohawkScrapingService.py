@@ -99,7 +99,8 @@ def get_product_details(driver: WebDriver, product_url: str):
         product_details = HTMLTemplateService.create_product_details_template(product_details_fields[0],
                                                                               product_details_fields[1])
         tags = ",".join(tags_text('.val span', soup))
-        return Product(image, image, product_category_title + ' ' + product_title, VENDOR_NAME, '', '', product_details,
+        return Product(product_title, image, image, product_category_title + ' ' + product_title, VENDOR_NAME, '', '',
+                       product_details,
                        tags)
     except Exception as e:
         logger.error('Fail to get product details for product with url: {} and exception: {}'.format(product_url, e))
@@ -107,10 +108,14 @@ def get_product_details(driver: WebDriver, product_url: str):
 
 
 def get_all_products_details(driver: WebDriver, product_urls: []):
-    product_details = []
+    products = []
+    id = 1
     for product_url in product_urls:
-        product_details.append(get_product_details(driver, product_url))
-    return product_details
+        product = get_product_details(driver, product_url)
+        product.id += str(id)
+        products.append(product)
+        id += 1
+    return products
 
 
 def get_wood_products_details():
