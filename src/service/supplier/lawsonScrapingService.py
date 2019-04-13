@@ -3,10 +3,10 @@ from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
 from src.model.Product import Product
-from src.service.common import HTMLTemplateService
-from src.service.common.CollectorService import get_soup_by_content, all_href_urls, tag_text, \
+from src.service.common import htmlTemplateService
+from src.service.common.collectorService import get_soup_by_content, all_href_urls, tag_text, \
     all_attributes_for_all_elements, inner_html_str, tags_text
-from src.service.common.SeleniumCollectorService import get_page_source_until_selector
+from src.service.common.seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'http://lawsonfloors.com/portfolio_category'
 ENGINEERED_WOOD_FLOORING_CATEGORY_URL = BASE_URL + '/engineered-wood-flooring'
@@ -43,14 +43,15 @@ def get_all_products_details(driver: WebDriver, category_urls: []):
 
         product_title = tag_text('.slide .text-holder h1', soup)
         product_details = inner_html_str('.box .info-list', soup)
-        product_details_fields = HTMLTemplateService.extract_product_details_from_html(product_details, '.name',
+        product_details_fields = htmlTemplateService.extract_product_details_from_html(product_details, '.name',
                                                                                        '.value')
-        product_details = HTMLTemplateService.create_product_details_template(product_details_fields[0],
-                                                                              product_details_fields[1]).replace('::',
-                                                                                                                 ':')
+        product_details = htmlTemplateService.create_product_template(product_details_fields[0],
+                                                                      product_details_fields[1]).replace('::',
+                                                                                                         ':')
         tags = ",".join(tags_text('.value', soup))
         products_details.append(
-            Product(product_title + str(id), first_image, second_image, product_title, VENDOR_NAME, '', '', product_details,
+            Product(product_title + str(id), first_image, second_image, product_title, VENDOR_NAME, '', '',
+                    product_details,
                     tags))
         id += 1
     return products_details

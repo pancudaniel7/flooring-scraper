@@ -6,7 +6,7 @@ class ShopifyCsv(object):
                  variantInventoryTracker='',
                  variantInventoryQty='0', variantInventoryPolicy='deny', variantFulfillmentService='manual', variantPrice='',
                  variantCompareAtPrice='', variantRequiresShipping='', variantTaxable='', variantBarcode='',
-                 imageSrc=' ',
+                 imageSrc='',
                  imagePosition='', imageAltText='', giftCard='FALSE', googleShoppingMPN='', googleShoppingAge='',
                  googleShoppingGender='', googleProduct='',
                  SEOTitle='', SEODescription='', googleShoppingAdWords='', googleShoppingAdWordsLabels='',

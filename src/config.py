@@ -2,7 +2,7 @@ import datetime
 import logging
 import os
 
-TEMPLATE_FILE_NAME = 'johnson-hardwood-template.csv'
+TEMPLATE_FILE_NAME = 'product-template.csv'
 
 
 def root_dir():

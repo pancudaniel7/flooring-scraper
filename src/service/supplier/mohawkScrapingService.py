@@ -1,12 +1,12 @@
 from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
-from src.Config import logger
+from src.config import logger
 from src.model.Product import Product
-from src.service.common import HTMLTemplateService
-from src.service.common.CollectorService import get_soup_by_content, all_href_urls, \
+from src.service.common import htmlTemplateService
+from src.service.common.collectorService import get_soup_by_content, all_href_urls, \
     all_attributes_for_all_elements, tag_text, tags_text, inner_html_str
-from src.service.common.SeleniumCollectorService import get_page_source_until_selector
+from src.service.common.seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'https://www.mohawkflooring.com'
 
@@ -56,23 +56,19 @@ def get_all_product_category_urls(driver: WebDriver, url: str):
 
 
 def get_product_urls_per_page(driver: WebDriver, category_url: str, category_base_url: str):
-    try:
-        driver.get(category_url)
-        page_content = get_page_source_until_selector(driver, '#related-color', TIME_OUT_DYNAMIC_DELAY)
-        soup = get_soup_by_content(page_content)
-        data_style_ids = all_attributes_for_all_elements('.slider-container div>a', 'data-style-id', soup)
-        data_color_ids = all_attributes_for_all_elements('.slider-container div>a', 'data-color-id', soup)
-        product_category_title = tag_text('.column.main-info h2', soup).replace(' ', '-')
-        products_titles = [text.replace(' ', '-') for text in
-                           tags_text('.slider-container span[class^="ng-binding"]', soup)]
-        return [
-            BASE_URL + category_base_url + '/' + style_id + '-' + color_id + '/' + product_category_title + '-' + product_title
-            for
-            style_id, color_id, product_title in
-            zip(data_style_ids, data_color_ids, products_titles)]
-    except Exception as e:
-        logger.error('Fail to get product urls on category url: {} with exception: {}'.format(category_url, e))
-        return None
+    driver.get(category_url)
+    page_content = get_page_source_until_selector(driver, '#related-color', TIME_OUT_DYNAMIC_DELAY)
+    soup = get_soup_by_content(page_content)
+    data_style_ids = all_attributes_for_all_elements('.slider-container div>a', 'data-style-id', soup)
+    data_color_ids = all_attributes_for_all_elements('.slider-container div>a', 'data-color-id', soup)
+    product_category_title = tag_text('.column.main-info h2', soup).replace(' ', '-')
+    products_titles = [text.replace(' ', '-') for text in
+                       tags_text('.slider-container span[class^="ng-binding"]', soup)]
+    return [
+        BASE_URL + category_base_url + '/' + style_id + '-' + color_id + '/' + product_category_title + '-' + product_title
+        for
+        style_id, color_id, product_title in
+        zip(data_style_ids, data_color_ids, products_titles)]
 
 
 def get_all_product_urls(driver: WebDriver, category_urls: [], category_base_url: str):
@@ -87,24 +83,20 @@ def get_all_product_urls(driver: WebDriver, category_urls: [], category_base_url
 
 
 def get_product_details(driver: WebDriver, product_url: str):
-    try:
-        driver.get(product_url)
-        page_content = get_page_source_until_selector(driver, '.swatch-image', TIME_OUT_PRODUCT_DELAY)
-        soup = get_soup_by_content(page_content)
-        image = all_attributes_for_all_elements('.swatch-image', 'back-img', soup)[0]
-        product_category_title = tag_text('.column.main-info h2', soup)
-        product_title = tag_text('.product-details .column.swatches-section h2', soup)
-        product_details = inner_html_str('.content .specifications-table', soup)
-        product_details_fields = HTMLTemplateService.extract_product_details_from_html(product_details, '.key', '.val')
-        product_details = HTMLTemplateService.create_product_details_template(product_details_fields[0],
-                                                                              product_details_fields[1])
-        tags = ",".join(tags_text('.val span', soup))
-        return Product(product_title, image, image, product_category_title + ' ' + product_title, VENDOR_NAME, '', '',
-                       product_details,
-                       tags)
-    except Exception as e:
-        logger.error('Fail to get product details for product with url: {} and exception: {}'.format(product_url, e))
-        return None
+    driver.get(product_url)
+    page_content = get_page_source_until_selector(driver, '.swatch-image', TIME_OUT_PRODUCT_DELAY)
+    soup = get_soup_by_content(page_content)
+    image = all_attributes_for_all_elements('.swatch-image', 'back-img', soup)[0]
+    product_category_title = tag_text('.column.main-info h2', soup)
+    product_title = tag_text('.product-details .column.swatches-section h2', soup)
+    product_details = inner_html_str('.content .specifications-table', soup)
+    product_details_fields = htmlTemplateService.extract_product_details_from_html(product_details, '.key', '.val')
+    product_details = htmlTemplateService.create_product_template(product_details_fields[0],
+                                                                  product_details_fields[1])
+    tags = ",".join(tags_text('.val span', soup))
+    return Product(product_title, image, image, product_category_title + ' ' + product_title, VENDOR_NAME, '', '',
+                   product_details,
+                   tags)
 
 
 def get_all_products_details(driver: WebDriver, product_urls: []):

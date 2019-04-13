@@ -2,10 +2,10 @@ from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
 from src.model.Product import Product
-from src.service.common import HTMLTemplateService
-from src.service.common.CollectorService import get_soup_by_content, all_href_urls, tag_text, \
+from src.service.common import htmlTemplateService
+from src.service.common.collectorService import get_soup_by_content, all_href_urls, tag_text, \
     all_attributes_for_all_elements, inner_html_str, tags_text
-from src.service.common.SeleniumCollectorService import get_page_source_until_selector
+from src.service.common.seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'http://www.regalhardwoods.com'
 CATEGORIES_URL = BASE_URL + '/floors'
@@ -51,10 +51,10 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
 
         product_title = tag_text('.slide .text-holder h1', soup)
         product_details = inner_html_str('.box .info-list', soup)
-        product_details_fields = HTMLTemplateService.extract_product_details_from_html(product_details, '.name',
+        product_details_fields = htmlTemplateService.extract_product_details_from_html(product_details, '.name',
                                                                                        '.value')
-        product_details = HTMLTemplateService.create_product_details_template(product_details_fields[0],
-                                                                              product_details_fields[1]).replace('::',
+        product_details = htmlTemplateService.create_product_template(product_details_fields[0],
+                                                                      product_details_fields[1]).replace('::',
                                                                                                                  ':')
         tags = ",".join(tags_text('.value', soup))
         products_details.append(
