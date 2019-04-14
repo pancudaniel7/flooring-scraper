@@ -5,7 +5,7 @@ from src.config import logger
 from src.model.Product import Product
 from src.service.common import htmlTemplateService
 from src.service.common.collectorService import get_soup_by_content, tag_text, \
-    all_attributes_for_all_elements, inner_html_str, tags_text, all_href_urls
+    all_attributes_for_all_elements, inner_html_str_index_0, tags_text, all_href_urls
 from src.service.common.seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'https://knoasflooring.com/product-category'
@@ -40,7 +40,7 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
         images = all_attributes_for_all_elements('.flex-control-nav.flex-control-thumbs img', 'src', soup)
         collection = tag_text('.summary.entry-summary h1', soup)
         product_titles = all_attributes_for_all_elements('.woocommerce-product-gallery__image a img', 'title', soup)
-        product_details = inner_html_str(
+        product_details = inner_html_str_index_0(
             '.woocommerce-Tabs-panel.woocommerce-Tabs-panel--description.panel.entry-content.wc-tab', soup).replace(
             '☛', '')
         soup = get_soup_by_content(product_details)

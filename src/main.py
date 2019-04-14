@@ -1,7 +1,7 @@
 from src.config import logger, initialise_configurations, csv_template_dir, TEMPLATE_FILE_NAME
 from src.service.shopify import csvService
 from src.service.supplier import knoasScrapingService, regalScrapingService, mohawkScrapingService, \
-    johnsonScrapingService
+    johnsonScrapingService, lwScrapingService
 from src.transformer import productToShopifyCsvTransformer
 
 
@@ -50,13 +50,22 @@ def main():
     # csvService.append_csv_array_to_file(csv_template_dir() + regalScrapingService.REGAL_CSV_FILE_NAME,
     #                                     shopify_csv_array)
 
-    # Knoas products
-    products_details = knoasScrapingService.get_products_details()
+    # Knoas
+    # products_details = knoasScrapingService.get_products_details()
+    # shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
+    # csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
+    #                           csv_template_dir() + knoasScrapingService.KNOAS_CSV_FILE_NAME)
+    # csvService.append_csv_array_to_file(csv_template_dir() + knoasScrapingService.KNOAS_CSV_FILE_NAME,
+    #                                     shopify_csv_array)
+
+    # Lw
+    products_details = lwScrapingService.get_products_details()
     shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
     csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
-                              csv_template_dir() + knoasScrapingService.KNOAS_CSV_FILE_NAME)
-    csvService.append_csv_array_to_file(csv_template_dir() + knoasScrapingService.KNOAS_CSV_FILE_NAME,
+                              csv_template_dir() + lwScrapingService.LW_CSV_FILE_NAME)
+    csvService.append_csv_array_to_file(csv_template_dir() + lwScrapingService.LW_CSV_FILE_NAME,
                                         shopify_csv_array)
+    
     logger.info('Finish')
 
 

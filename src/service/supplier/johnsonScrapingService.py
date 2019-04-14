@@ -6,7 +6,7 @@ from src.model.Product import Product
 from src.service.common.collectorImageService import first_img_url_under_pixel_limit, \
     SHOPIFY_MEGA_PIXELS_IMAGE_RESOLUTION_LIMIT
 from src.service.common.collectorService import all_href_urls, get_page_soup, all_images_urls, tag_text, \
-    inner_html_str, tags_text
+    inner_html_str_index_0, tags_text
 
 PRODUCTS_URL = 'http://johnsonhardwood.com/products/'
 VENDOR_NAME = 'Johnson Hardwood'
@@ -31,7 +31,7 @@ def get_product_details(session: Session, product_url: str):
                                                         session)
     title = tag_text('.main .container .header-wrapper h1', soup)
     product_code = tag_text('.main .container .header-wrapper h1 + span', soup)
-    product_details = inner_html_str('.main .entry-content.container .details', soup)
+    product_details = inner_html_str_index_0('.main .entry-content.container .details', soup)
     tags = ", ".join(tags_text('.main .entry-content.container .details span', soup))
 
     return Product(title, image, variant_image_url,

@@ -5,7 +5,7 @@ from src.config import logger
 from src.model.Product import Product
 from src.service.common import htmlTemplateService
 from src.service.common.collectorService import get_soup_by_content, all_href_urls, \
-    all_attributes_for_all_elements, tag_text, tags_text, inner_html_str
+    all_attributes_for_all_elements, tag_text, tags_text, inner_html_str_index_0
 from src.service.common.seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'https://www.mohawkflooring.com'
@@ -89,7 +89,7 @@ def get_product_details(driver: WebDriver, product_url: str):
     image = all_attributes_for_all_elements('.swatch-image', 'back-img', soup)[0]
     product_category_title = tag_text('.column.main-info h2', soup)
     product_title = tag_text('.product-details .column.swatches-section h2', soup)
-    product_details = inner_html_str('.content .specifications-table', soup)
+    product_details = inner_html_str_index_0('.content .specifications-table', soup)
     product_details_fields = htmlTemplateService.extract_product_details_from_html(product_details, '.key', '.val')
     product_details = htmlTemplateService.create_product_template(product_details_fields[0],
                                                                   product_details_fields[1])

@@ -5,7 +5,7 @@ from selenium.webdriver.phantomjs.webdriver import WebDriver
 from src.model.Product import Product
 from src.service.common import htmlTemplateService
 from src.service.common.collectorService import get_soup_by_content, all_href_urls, tag_text, \
-    all_attributes_for_all_elements, inner_html_str, tags_text
+    all_attributes_for_all_elements, inner_html_str_index_0, tags_text
 from src.service.common.seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'http://lawsonfloors.com/portfolio_category'
@@ -42,7 +42,7 @@ def get_all_products_details(driver: WebDriver, category_urls: []):
             0].replace('background-image:url(', '').replace(');', '')
 
         product_title = tag_text('.slide .text-holder h1', soup)
-        product_details = inner_html_str('.box .info-list', soup)
+        product_details = inner_html_str_index_0('.box .info-list', soup)
         product_details_fields = htmlTemplateService.extract_product_details_from_html(product_details, '.name',
                                                                                        '.value')
         product_details = htmlTemplateService.create_product_template(product_details_fields[0],
@@ -62,6 +62,5 @@ def get_products_details():
     category_urls = get_product_category_urls(driver, ENGINEERED_WOOD_FLOORING_CATEGORY_URL)
     category_urls.extend(get_product_category_urls(driver, LAMINATE_FLOORING_CATEGORY_URL))
     category_urls.extend(get_product_category_urls(driver, WATERPROOF_CATEGORY_URL))
-
     driver.quit()
     return None
