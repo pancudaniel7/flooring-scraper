@@ -16,6 +16,11 @@ def all_attributes_for_all_elements(selector: str, attribute: str, soup: Beautif
     return [e.get(attribute) for e in elements if e.get(attribute, '') != '']
 
 
+def href_url_index_0(selector: str, soup: BeautifulSoup):
+    elements = soup.select(selector + ' a')
+    return [a['href'] for a in elements][0]
+
+
 def all_href_urls(selector: str, soup: BeautifulSoup):
     elements = soup.select(selector + ' a')
     return [a['href'] for a in elements]
