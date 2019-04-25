@@ -26,7 +26,7 @@ def all_href_urls(selector: str, soup: BeautifulSoup):
     return [a['href'] for a in elements]
 
 
-def all_images_urls(selector: str, soup: BeautifulSoup):
+def all_images_src(selector: str, soup: BeautifulSoup):
     images = soup.select(selector + ' img')
     return [img['src'] for img in images]
 

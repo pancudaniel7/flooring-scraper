@@ -15,15 +15,15 @@ WOOD_URL = BASE_URL + '/wood-floors'
 ACCESSORIES_URL = BASE_URL + '/accessories'
 KNOAS_CSV_FILE_NAME = 'knoas-hardwood-template.csv'
 
-TIME_OUT_PRODUCT_DELAY = 4
-TIME_OUT_URL_DELAY = 120
+TIME_OUT_PRODUCT = 4
+TIME_OUT_URL = 120
 
 VENDOR_NAME = 'Knoas Flooring'
 
 
 def get_product_category_urls(driver: WebDriver, url: str):
     driver.get(url)
-    page_content = get_page_source_until_selector(driver, '.entry-title', TIME_OUT_URL_DELAY)
+    page_content = get_page_source_until_selector(driver, '.entry-title', TIME_OUT_URL)
     soup = get_soup_by_content(page_content)
     return [url for url in all_href_urls('.woocom-list-content .entry-title', soup)]
 
@@ -35,7 +35,7 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
         driver.get(product_url)
         page_content = get_page_source_until_selector(driver,
                                                       'img',
-                                                      TIME_OUT_URL_DELAY)
+                                                      TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
         images = all_attributes_for_all_elements('.flex-control-nav.flex-control-thumbs img', 'src', soup)
         collection = tag_text('.summary.entry-summary h1', soup)
@@ -47,7 +47,7 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
         product_details = tags_text('li', soup)
         if not product_details or product_details[0] == '':
             product_details = tags_text('p', soup)
-        tags = ",".join(product_details)
+        tags = ','.join(product_details)
         tags += ',' + collection
         details = htmlTemplateService.create_second_product_template(product_details)
         id = 1

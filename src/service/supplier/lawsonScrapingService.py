@@ -15,15 +15,15 @@ WATERPROOF_CATEGORY_URL = BASE_URL + '/waterproof-flooring'
 
 LAWSON_CSV_FILE_NAME = 'lawson-hardwood-template.csv'
 
-TIME_OUT_PRODUCT_DELAY = 4
-TIME_OUT_URL_DELAY = 5
+TIME_OUT_PRODUCT = 4
+TIME_OUT_URL = 5
 
 VENDOR_NAME = 'Lawson Flooring'
 
 
 def get_product_category_urls(driver: WebDriver, url: str):
     driver.get(url)
-    page_content = get_page_source_until_selector(driver, '.image-wrap', TIME_OUT_URL_DELAY)
+    page_content = get_page_source_until_selector(driver, '.image-wrap', TIME_OUT_URL)
     soup = get_soup_by_content(page_content)
     return [BASE_URL + url for url in all_href_urls('.content #content', soup)]
 
@@ -33,7 +33,7 @@ def get_all_products_details(driver: WebDriver, category_urls: []):
     id = 1
     for category_url in category_urls:
         driver.get(category_url)
-        page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL_DELAY)
+        page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
         first_image = all_attributes_for_all_elements('.floor-visual.box .bg-cover', 'style', soup)[0].replace(
             'background-image:url(', '').replace(');', '')

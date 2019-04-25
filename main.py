@@ -1,13 +1,12 @@
-from src.config import logger, initialise_configurations, csv_template_dir, TEMPLATE_FILE_NAME
+from src.config import logger, initialise_configurations, TEMPLATE_FILE_NAME, csv_template_dir
 from src.service.shopify import csvService
-from src.service.supplier import knoasScrapingService, regalScrapingService, mohawkScrapingService, \
-    johnsonScrapingService, lwScrapingService, eagleFlooringScrapingService
+from src.service.supplier import mullicanFlooringScrapingService, eagleFlooringScrapingService
 from src.transformer import productToShopifyCsvTransformer
 
 
 def main():
-    logger.info('Start collecting data')
     initialise_configurations()
+    logger.info('Start collecting data')
 
     # Johnson Hardwood
     # products_details = johnsonScrapingService.get_products_details()
@@ -86,6 +85,14 @@ def main():
     # csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
     #                           csv_template_dir() + eagleFlooringScrapingService.EAGLE_VINYL_CSV_FILE_NAME)
     # csvService.append_csv_array_to_file(csv_template_dir() + eagleFlooringScrapingService.EAGLE_VINYL_CSV_FILE_NAME,
+    #                                     shopify_csv_array)
+
+    # Mullican
+    # products_details = mullicanFlooringScrapingService.get_products_details()
+    # shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
+    # csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
+    #                           csv_template_dir() + mullicanFlooringScrapingService.MULLICAN_CSV_FILE_NAME)
+    # csvService.append_csv_array_to_file(csv_template_dir() + mullicanFlooringScrapingService.MULLICAN_CSV_FILE_NAME,
     #                                     shopify_csv_array)
 
     logger.info('Finish')

@@ -18,8 +18,8 @@ EAGLE_HARDWOOD_CSV_FILE_NAME = 'eagle-creek-hardwood-template.csv'
 EAGLE_LAMINATE_CSV_FILE_NAME = 'eagle-creek-laminate-template.csv'
 EAGLE_VINYL_CSV_FILE_NAME = 'eagle-creek-vinyl-template.csv'
 
-TIME_OUT_PRODUCT_DELAY = 30
-TIME_OUT_URL_DELAY = 50
+TIME_OUT_PRODUCT = 30
+TIME_OUT_URL = 50
 
 VENDOR_NAME = 'Eagle Creek Flooring'
 
@@ -28,7 +28,7 @@ def get_product_urls(driver: WebDriver, url: str):
     driver.get(url)
     page_content = get_page_source_until_selector(driver,
                                                   '.hb-main-content .products a',
-                                                  TIME_OUT_URL_DELAY)
+                                                  TIME_OUT_URL)
     soup = get_soup_by_content(page_content)
     category_urls = set(all_attributes_for_all_elements('.hb-main-content .products a', 'href', soup))
     return category_urls
@@ -42,7 +42,7 @@ def get_all_products_details(driver: WebDriver, urls: []):
         driver.get(url)
         page_content = get_page_source_until_selector(driver,
                                                       '.woocommerce-product-gallery__wrapper a',
-                                                      TIME_OUT_PRODUCT_DELAY)
+                                                      TIME_OUT_PRODUCT)
         soup = get_soup_by_content(page_content)
         image = all_attributes_for_all_elements(
             '.woocommerce-product-gallery__wrapper a', 'href', soup)[0]

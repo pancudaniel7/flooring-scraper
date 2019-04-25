@@ -13,8 +13,8 @@ BASE_URL = 'https://www.lwflooring.com/'
 PRODUCTS_URL = BASE_URL + 'products.html'
 LW_CSV_FILE_NAME = 'lw-hardwood-template.csv'
 
-TIME_OUT_PRODUCT_DELAY = 30
-TIME_OUT_URL_DELAY = 30
+TIME_OUT_PRODUCT = 30
+TIME_OUT_URL = 30
 
 VENDOR_NAME = 'Lw Flooring'
 
@@ -23,7 +23,7 @@ def get_product_category_urls(driver: WebDriver, url: str):
     driver.get(url)
     page_content = get_page_source_until_selector(driver,
                                                   'img',
-                                                  TIME_OUT_URL_DELAY)
+                                                  TIME_OUT_URL)
     soup = get_soup_by_content(page_content)
     category_urls = [BASE_URL + url for url in all_href_urls('#pu23978', soup)]
     category_urls.extend([BASE_URL + url for url in all_href_urls('#pu23981', soup)])
@@ -34,7 +34,7 @@ def get_product_collectors_urls(driver: WebDriver, urls: []):
     collectors = []
     for url in urls:
         driver.get(url)
-        page_content = get_page_source_until_selector(driver, '.nonblock', TIME_OUT_URL_DELAY)
+        page_content = get_page_source_until_selector(driver, '.nonblock', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
         product_urls = all_attributes_for_all_elements('.clearfix.colelem.shared_content a', 'href', soup)
         collectors.extend(
@@ -52,7 +52,7 @@ def get_all_products_details(driver: WebDriver, collectors: [Collector]):
         driver.get(collector.url)
         page_content = get_page_source_until_selector(driver,
                                                       '.PamphletWidget .nonblock.nontext.Container.museBGSize.grpelem.wp-panel.wp-panel-active',
-                                                      TIME_OUT_PRODUCT_DELAY)
+                                                      TIME_OUT_PRODUCT)
         soup = get_soup_by_content(page_content)
         images = all_attributes_for_all_elements(
             '.PamphletWidget .nonblock.nontext.Container.museBGSize.grpelem.wp-panel.wp-panel-active', 'href', soup)

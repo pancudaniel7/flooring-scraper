@@ -11,15 +11,15 @@ BASE_URL = 'http://www.regalhardwoods.com'
 CATEGORIES_URL = BASE_URL + '/floors'
 REGAL_CSV_FILE_NAME = 'regal-hardwood-template.csv'
 
-TIME_OUT_PRODUCT_DELAY = 4
-TIME_OUT_URL_DELAY = 5
+TIME_OUT_PRODUCT = 4
+TIME_OUT_URL = 5
 
 VENDOR_NAME = 'Regal Flooring'
 
 
 def get_product_category_urls(driver: WebDriver, url: str):
     driver.get(url)
-    page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL_DELAY)
+    page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL)
     soup = get_soup_by_content(page_content)
     return [BASE_URL + url for url in all_href_urls('.brand-items .mask', soup)]
 
@@ -28,7 +28,7 @@ def get_product_urls(driver: WebDriver, category_urls: []):
     products_urls = []
     for category_url in category_urls:
         driver.get(category_url)
-        page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL_DELAY)
+        page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
         products_urls.extend([BASE_URL + url for url in all_href_urls('.brand-items .mask', soup)])
     return products_urls
@@ -39,7 +39,7 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
     id = 1
     for product_url in product_urls:
         driver.get(product_url)
-        page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL_DELAY)
+        page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
 
         # TODO: Refactor image size, the size exeedes the 20 mb limit
