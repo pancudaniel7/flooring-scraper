@@ -32,6 +32,7 @@ def get_product_details(session: Session, product_url: str):
     title = tag_text('.main .container .header-wrapper h1', soup)
     product_code = tag_text('.main .container .header-wrapper h1 + span', soup)
     product_details = inner_html_str_index_0('.main .entry-content.container .details', soup)
+    collection = tag_text('.series-logo .sr-only', soup)
     tags = ", ".join(tags_text('.main .entry-content.container .details span', soup))
 
     return Product(title, image, variant_image_url,
