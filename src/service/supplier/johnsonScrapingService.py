@@ -10,7 +10,7 @@ from src.service.common.collectorService import all_href_urls, get_page_soup, al
 
 PRODUCTS_URL = 'http://johnsonhardwood.com/products/'
 VENDOR_NAME = 'Johnson Hardwood'
-CSV_FILE_NAME = 'johnson-hardwood-template.csv'
+WOOD_CSV_FILE_NAME = 'johnson-hardwood-template.csv'
 
 
 def get_all_categories_products_urls(session: Session, url: str):
@@ -33,8 +33,8 @@ def get_product_details(session: Session, product_url: str):
     product_code = tag_text('.main .container .header-wrapper h1 + span', soup)
     product_details = inner_html_str_index_0('.main .entry-content.container .details', soup)
     collection = tag_text('.series-logo .sr-only', soup)
-    tags = ", ".join(tags_text('.main .entry-content.container .details span', soup))
-
+    tags = ",".join(tags_text('.main .entry-content.container .details span', soup))
+    tags += "," + collection
     return Product(title, image, variant_image_url,
                    title, VENDOR_NAME,
                    product_code, '',
