@@ -93,7 +93,10 @@ def get_product_details(driver: WebDriver, product_url: str):
     product_details_fields = htmlTemplateService.extract_product_details_from_html(product_details, '.key', '.val')
     product_details = htmlTemplateService.create_product_template(product_details_fields[0],
                                                                   product_details_fields[1])
-    tags = ",".join(tags_text('.val span', soup))
+    collection = tag_text('#product-details > section:nth-child(2) > div.row.collapse > div.column.main-info > h3',
+                          soup)
+    tags = ','.join(tags_text('.val span', soup))
+    tags += ',' + collection
     return Product(product_title, image, image, product_category_title + ' ' + product_title, VENDOR_NAME, '', '',
                    product_details,
                    tags)
