@@ -1,8 +1,7 @@
-from src.config import logger, initialise_configurations, TEMPLATE_FILE_NAME, csv_template_dir
-from src.service.shopify import csvService
-from src.service.supplier import mullicanFlooringScrapingService, eagleFlooringScrapingService, mohawkScrapingService, \
-    johnsonScrapingService
-from src.transformer import productToShopifyCsvTransformer
+import productToShopifyCsvTransformer
+import csvService
+import mohawkScrapingService
+from config import initialise_configurations, logger, csv_template_dir, TEMPLATE_FILE_NAME
 
 
 def main():
@@ -27,20 +26,20 @@ def main():
                                         shopify_csv_array)
 
     # Vinyl
-    # products_details = mohawkScrapingService.get_vinyl_products_details()
-    # shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
-    # csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
-    #                           csv_template_dir() + mohawkScrapingService.VINYL_CSV_FILE_NAME)
-    # csvService.append_csv_array_to_file(csv_template_dir() + mohawkScrapingService.VINYL_CSV_FILE_NAME,
-    #                                     shopify_csv_array)
+    products_details = mohawkScrapingService.get_vinyl_products_details()
+    shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
+    csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
+                              csv_template_dir() + mohawkScrapingService.VINYL_CSV_FILE_NAME)
+    csvService.append_csv_array_to_file(csv_template_dir() + mohawkScrapingService.VINYL_CSV_FILE_NAME,
+                                        shopify_csv_array)
 
     # Tile
-    # products_details = mohawkScrapingService.get_tile_products_details()
-    # shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
-    # csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
-    #                           csv_template_dir() + mohawkScrapingService.TILE_CSV_FILE_NAME)
-    # csvService.append_csv_array_to_file(csv_template_dir() + mohawkScrapingService.TILE_CSV_FILE_NAME,
-    #                                     shopify_csv_array)
+    products_details = mohawkScrapingService.get_tile_products_details()
+    shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
+    csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
+                              csv_template_dir() + mohawkScrapingService.TILE_CSV_FILE_NAME)
+    csvService.append_csv_array_to_file(csv_template_dir() + mohawkScrapingService.TILE_CSV_FILE_NAME,
+                                        shopify_csv_array)
 
     # Regal Hardwood
     # products_details = regalScrapingService.get_products_details()

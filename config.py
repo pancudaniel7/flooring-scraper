@@ -6,7 +6,7 @@ TEMPLATE_FILE_NAME = 'product-template.csv'
 
 
 def root_dir():
-    return os.path.dirname(os.path.abspath(__file__ + '../../')) + '/'
+    return os.path.dirname(os.path.abspath(__file__)) + '/'
 
 
 def resource_dir():

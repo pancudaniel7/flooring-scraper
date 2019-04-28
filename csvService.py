@@ -1,7 +1,7 @@
 import csv
 import shutil
 
-from src.config import logger
+from config import logger
 
 
 def append_csv_array_to_file(csv_file_path: str, shoppify_csv_array: list):

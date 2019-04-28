@@ -1,12 +1,12 @@
 from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
-from src.config import logger
-from src.model.Product import Product
-from src.service.common.collectorService import get_soup_by_content, all_attributes_for_all_elements, tags_text, \
+from config import logger
+from Product import Product
+from collectorService import get_soup_by_content, all_attributes_for_all_elements, tags_text, \
     tag_text
-from src.service.common.htmlTemplateService import create_second_product_template
-from src.service.common.seleniumCollectorService import get_page_source_until_selector
+from htmlTemplateService import create_second_product_template
+from seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'http://eaglecreekfloors.com/'
 

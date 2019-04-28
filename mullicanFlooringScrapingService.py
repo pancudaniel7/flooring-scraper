@@ -3,12 +3,12 @@ import re
 from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
-from src.config import logger
-from src.model.Product import Product
-from src.service.common import htmlTemplateService
-from src.service.common.collectorService import get_soup_by_content, all_href_urls, tag_text, \
+from config import logger
+from Product import Product
+import htmlTemplateService
+from collectorService import get_soup_by_content, all_href_urls, tag_text, \
     tags_text, all_attributes_for_all_elements
-from src.service.common.seleniumCollectorService import get_page_source_until_selector, \
+from seleniumCollectorService import get_page_source_until_selector, \
     get_page_source_after_click_with_delay, get_page_source_until_selector_with_delay
 
 BASE_URL = 'https://www.mullicanflooring.com'

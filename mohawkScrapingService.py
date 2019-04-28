@@ -1,12 +1,12 @@
 from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
-from src.config import logger
-from src.model.Product import Product
-from src.service.common import htmlTemplateService
-from src.service.common.collectorService import get_soup_by_content, all_href_urls, \
+from config import logger
+from Product import Product
+import htmlTemplateService
+from collectorService import get_soup_by_content, all_href_urls, \
     all_attributes_for_all_elements, tag_text, tags_text, inner_html_str_index_0
-from src.service.common.seleniumCollectorService import get_page_source_until_selector
+from seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'https://www.mohawkflooring.com'
 
@@ -106,6 +106,7 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
     products = []
     id = 1
     for product_url in product_urls:
+        logger.debug('Get product details for url: {}'.format(product_url))
         product = get_product_details(driver, product_url)
         product.id += str(id)
         products.append(product)

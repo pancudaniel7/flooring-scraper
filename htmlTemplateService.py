@@ -1,4 +1,4 @@
-from src.service.common.collectorService import get_soup_by_content, tags_text
+from collectorService import get_soup_by_content, tags_text
 
 
 def create_product_template(labels: [], values: [], product_code: str = ''):
@@ -11,8 +11,10 @@ def create_product_template(labels: [], values: [], product_code: str = ''):
     return html_content
 
 
-def create_second_product_template(values: []):
+def create_second_product_template(values: [], product_code: str = ''):
     html_content: str = '<div>'
+    if product_code != '':
+        html_content += '<div><strong>Product code: </strong><span>{}</span></div>'.format(product_code)
     for value in values:
         html_content += '<div><span>{}</span></div>'.format(value)
     html_content += '</div>'

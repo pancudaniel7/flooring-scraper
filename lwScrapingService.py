@@ -1,13 +1,13 @@
 from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
-from src.config import logger
-from src.model.Collector import Collector
-from src.model.Product import Product
-from src.service.common import htmlTemplateService
-from src.service.common.collectorService import get_soup_by_content, all_attributes_for_all_elements, all_href_urls, \
+from config import logger
+from Collector import Collector
+from Product import Product
+import htmlTemplateService
+from collectorService import get_soup_by_content, all_attributes_for_all_elements, all_href_urls, \
     inner_html, tags_text
-from src.service.common.seleniumCollectorService import get_page_source_until_selector
+from seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'https://www.lwflooring.com/'
 PRODUCTS_URL = BASE_URL + 'products.html'
