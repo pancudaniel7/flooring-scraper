@@ -48,8 +48,8 @@ def get_product_urls_per_page(driver: WebDriver, category_url: str, category_bas
     driver.get(category_url)
     page_content = get_page_source_until_selector(driver, '#related-color', TIME_OUT_DYNAMIC)
     soup = get_soup_by_content(page_content)
-    data_style_ids = all_attributes_for_all_elements('.slider-container div>a', 'data-style-id', soup)
-    data_color_ids = all_attributes_for_all_elements('.slider-container div>a', 'data-color-id', soup)
+    data_style_ids = all_attributes_for_all_elements('.slider-container div > a', 'data-style-id', soup)
+    data_color_ids = all_attributes_for_all_elements('.slider-container div > a', 'data-color-id', soup)
     product_category_title = tag_text('.column.main-info h2', soup).replace(' ', '-')
     products_titles = [text.replace(' ', '-') for text in
                        tags_text('.slider-container span[class^="ng-binding"]', soup)]
@@ -93,6 +93,7 @@ def get_product_details(driver: WebDriver, product_url: str):
 
 def get_all_products_details(driver: WebDriver, product_urls: []):
     products = []
+    logger.debug('Product number: {}'.format(len(product_urls)))
     id = 1
     for product_url in product_urls:
         logger.debug('Get product details for url: {}'.format(product_url))
