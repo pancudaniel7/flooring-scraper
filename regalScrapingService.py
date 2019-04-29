@@ -1,5 +1,6 @@
 import re
 
+from config import logger
 from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
@@ -21,6 +22,7 @@ VENDOR_NAME = 'Regal Flooring'
 
 
 def get_product_category_urls(driver: WebDriver, url: str):
+    logger.debug('Getting category urls for: ' + url)
     driver.get(url)
     page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL)
     soup = get_soup_by_content(page_content)
@@ -30,6 +32,7 @@ def get_product_category_urls(driver: WebDriver, url: str):
 def get_product_urls(driver: WebDriver, category_urls: []):
     products_urls = []
     for category_url in category_urls:
+        logger.debug('Getting products urls for category url: ' + category_url)
         driver.get(category_url)
         page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
@@ -43,6 +46,7 @@ def get_all_products_details(driver: WebDriver, collectors: []):
     products_details = []
     id = 1
     for collector in collectors:
+        logger.debug('Getting products details for product url: ' + collector.url)
         driver.get(collector.url)
         page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
