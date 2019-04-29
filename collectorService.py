@@ -32,7 +32,7 @@ def all_images_src(selector: str, soup: BeautifulSoup):
 
 
 def tag_text(selector: str, soup: BeautifulSoup):
-    return soup.select(selector)[0].text.strip()
+    return soup.select(selector)[0].text.strip() if len(soup.select(selector)) > 0 else ''
 
 
 def tags_text(selector: str, soup: BeautifulSoup):
@@ -49,3 +49,10 @@ def inner_html_str_index_0(selector: str, soup: BeautifulSoup):
 
 def inner_html_str_at_index(selector: str, index: int, soup: BeautifulSoup):
     return str(soup.select(selector)[index]).replace('\r', '').replace('\n', '')
+
+
+def extract_product_details_from_html(content_html: str, labels_selector: str, values_selector: str):
+    soup = get_soup_by_content(content_html)
+    labels = tags_text(labels_selector, soup)
+    values = tags_text(values_selector, soup)
+    return [labels, values]

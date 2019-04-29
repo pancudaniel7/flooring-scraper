@@ -5,8 +5,8 @@ from config import logger
 from Product import Product
 import htmlTemplateService
 from collectorService import get_soup_by_content, all_href_urls, \
-    all_attributes_for_all_elements, tag_text, tags_text, inner_html_str_index_0
-from seleniumCollectorService import get_page_source_until_selector
+    all_attributes_for_all_elements, tag_text, tags_text, inner_html_str_index_0, extract_product_details_from_html
+from seleniumCollectorService import get_page_source_until_selector, get_page_source_until_selector_with_delay
 
 BASE_URL = 'https://www.mohawkflooring.com'
 
@@ -29,30 +29,19 @@ VENDOR_NAME = 'Mohawk Flooring'
 TIME_OUT_DYNAMIC = 5
 TIME_OUT_PRODUCT = 3
 TIME_OUT_CATEGORY_URL = 10
+TIME_CATEGORY_URLS_DELAY = 5
 
 
 def get_product_category_urls_per_page(driver: WebDriver, url: str, page_number: int):
-    try:
-        driver.get(url + str(page_number))
-        page_content = get_page_source_until_selector(driver, '.product-image', TIME_OUT_CATEGORY_URL)
-        soup = get_soup_by_content(page_content)
-        return [BASE_URL + url for url in all_href_urls('.style-tile', soup)]
-    except Exception as e:
-        logger.debug(
-            'Did not find any page source on page for categories: {} with exception: {}'.format(page_number, e))
-        return None
+    driver.get(url + str(page_number))
+    page_content = get_page_source_until_selector_with_delay(driver, '.product-image img', TIME_OUT_CATEGORY_URL,
+                                                             TIME_CATEGORY_URLS_DELAY)
+    soup = get_soup_by_content(page_content)
+    return [BASE_URL + url for url in all_href_urls('.style-tile', soup)]
 
 
 def get_all_product_category_urls(driver: WebDriver, url: str):
-    category_urls = []
-    i = 1
-    while True:
-        response = get_product_category_urls_per_page(driver, url, i)
-        logger.debug('Get all product category urls for page: {}'.format(url + str(i)))
-        if response is None:
-            return category_urls
-        i += 1
-        category_urls.extend(response)
+    return get_product_category_urls_per_page(driver, url, 100)
 
 
 def get_product_urls_per_page(driver: WebDriver, category_url: str, category_base_url: str):
@@ -90,13 +79,13 @@ def get_product_details(driver: WebDriver, product_url: str):
     product_category_title = tag_text('.column.main-info h2', soup)
     product_title = tag_text('.product-details .column.swatches-section h2', soup)
     product_details = inner_html_str_index_0('.content .specifications-table', soup)
-    product_details_fields = htmlTemplateService.extract_product_details_from_html(product_details, '.key', '.val')
+    product_details_fields = extract_product_details_from_html(product_details, '.key', '.val')
     product_details = htmlTemplateService.create_product_template(product_details_fields[0],
                                                                   product_details_fields[1])
     collection = tag_text('#product-details > section:nth-child(2) > div.row.collapse > div.column.main-info > h3',
                           soup)
     tags = ','.join(tags_text('.val span', soup))
-    tags += ',' + collection
+    if collection != '': tags += ',' + collection
     return Product(product_title, image, image, product_category_title + ' ' + product_title, VENDOR_NAME, '', '',
                    product_details,
                    tags)

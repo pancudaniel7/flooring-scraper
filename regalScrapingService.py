@@ -1,10 +1,13 @@
+import re
+
 from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
-from Product import Product
 import htmlTemplateService
+from Collector import Collector
+from Product import Product
 from collectorService import get_soup_by_content, all_href_urls, tag_text, \
-    inner_html_str_index_0, tags_text
+    inner_html_str_index_0, tags_text, extract_product_details_from_html
 from seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'http://www.regalhardwoods.com'
@@ -30,15 +33,17 @@ def get_product_urls(driver: WebDriver, category_urls: []):
         driver.get(category_url)
         page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
-        products_urls.extend([BASE_URL + url for url in all_href_urls('.brand-items .mask', soup)])
+        product_collection = re.search(r'\/([0-9,a-z,A-Z,-]+)$', category_url).group(1).replace('-', ' ').title()
+        products_urls.extend(
+            [Collector(BASE_URL + url, product_collection) for url in all_href_urls('.brand-items .mask', soup)])
     return products_urls
 
 
-def get_all_products_details(driver: WebDriver, product_urls: []):
+def get_all_products_details(driver: WebDriver, collectors: []):
     products_details = []
     id = 1
-    for product_url in product_urls:
-        driver.get(product_url)
+    for collector in collectors:
+        driver.get(collector.url)
         page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
 
@@ -49,14 +54,15 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
         #     '.box.floor-slideshow.slideshow.gallery-js-ready.autorotation-disabled .bg-cover', 'style', soup)[
         #     0].replace('background-image:url(', '').replace(');', '')
 
-        product_title = tag_text('.slide .text-holder h1', soup)
+        product_title = tag_text('.slide .text-holder h1', soup).title()
         product_details = inner_html_str_index_0('.box .info-list', soup)
-        product_details_fields = htmlTemplateService.extract_product_details_from_html(product_details, '.name',
-                                                                                       '.value')
+        product_details_fields = extract_product_details_from_html(product_details, '.name',
+                                                                   '.value')
         product_details = htmlTemplateService.create_product_template(product_details_fields[0],
                                                                       product_details_fields[1]).replace('::',
-                                                                                                                 ':')
-        tags = ",".join(tags_text('.value', soup))
+                                                                                                         ':')
+        tags = ','.join(tags_text('.value', soup))
+        tags += ',' + collector.product_collection
         products_details.append(
             Product(product_title + str(id), '', '', product_title, VENDOR_NAME, '', '', product_details,
                     tags))
@@ -68,7 +74,6 @@ def get_products_details():
     driver = webdriver.WebDriver()
     category_urls = get_product_category_urls(driver, CATEGORIES_URL)
     product_urls = get_product_urls(driver, category_urls)
-    products_details = get_all_products_details(driver,
-                                                product_urls)
+    products_details = get_all_products_details(driver, product_urls)
     driver.quit()
     return products_details

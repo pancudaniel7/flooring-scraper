@@ -1,4 +1,4 @@
 class Collector(object):
-    def __init__(self, url='', collection=''):
+    def __init__(self, url='', product_collection=''):
         self.url = url
-        self.collection = collection
+        self.product_collection = product_collection
