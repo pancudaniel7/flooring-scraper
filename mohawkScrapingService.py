@@ -30,6 +30,7 @@ TIME_OUT_DYNAMIC = 5
 TIME_OUT_PRODUCT = 3
 TIME_OUT_CATEGORY_URL = 10
 TIME_CATEGORY_URLS_DELAY = 5
+TIME_DELAY = 1
 
 
 def get_product_category_urls_per_page(driver: WebDriver, url: str, page_number: int):
@@ -73,7 +74,7 @@ def get_all_product_urls(driver: WebDriver, category_urls: [], category_base_url
 
 def get_product_details(driver: WebDriver, product_url: str):
     driver.get(product_url)
-    page_content = get_page_source_until_selector(driver, '.swatch-image', TIME_OUT_PRODUCT)
+    page_content = get_page_source_until_selector_with_delay(driver, '.swatch-image', TIME_OUT_PRODUCT, TIME_DELAY)
     soup = get_soup_by_content(page_content)
     image = all_attributes_for_all_elements('.swatch-image', 'back-img', soup)[0]
     product_category_title = tag_text('.column.main-info h2', soup)
