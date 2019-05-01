@@ -7,7 +7,7 @@ from config import logger
 from Product import Product
 import htmlTemplateService
 from collectorService import get_soup_by_content, all_href_urls, tag_text, \
-    tags_text, all_attributes_for_all_elements
+    tags_text, attribute_value_for_all_elements
 from seleniumCollectorService import get_page_source_until_selector, \
     get_page_source_after_click_with_delay, get_page_source_until_selector_with_delay
 
@@ -52,7 +52,7 @@ def get_sub_product_urls(driver: webdriver, product_urls: []):
         page_content = get_page_source_until_selector(driver, '#vue-product-detail img',
                                                       TIME_OUT_PRODUCT)
         soup = get_soup_by_content(page_content)
-        product_codes = set(all_attributes_for_all_elements(
+        product_codes = set(attribute_value_for_all_elements(
             '#vue-product-detail > div:nth-child(2) > div > div> div > img', 'src', soup))
         sub_product_urls.extend(list(map(
             lambda product_code: SUK_URL + re.search(r'/([0-9]{1,5})-', product_code).group(1) if re.search(
@@ -72,7 +72,7 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
                                                                  SLEEP_DELAY)
         soup = get_soup_by_content(page_content)
 
-        images = all_attributes_for_all_elements(
+        images = attribute_value_for_all_elements(
             '#vue-product-detail > div:nth-child(2) > div > img', 'src', soup)
         if len(images) == 0:
             continue

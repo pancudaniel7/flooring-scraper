@@ -11,9 +11,15 @@ def get_soup_by_content(page_content: str):
     return BeautifulSoup(page_content, features="lxml")
 
 
-def all_attributes_for_all_elements(selector: str, attribute: str, soup: BeautifulSoup):
+def attribute_value_for_all_elements(selector: str, attribute: str, soup: BeautifulSoup):
     elements = soup.select(selector)
     return [e.get(attribute) for e in elements if e.get(attribute, '') != '']
+
+
+def attribute_value_element(selector: str, attribute: str, soup: BeautifulSoup):
+    elements = soup.select(selector)
+    img_urls = [e.get(attribute) for e in elements if e.get(attribute, '') != '']
+    return img_urls[0] if len(img_urls) > 0 else ''
 
 
 def href_url_index_0(selector: str, soup: BeautifulSoup):
@@ -23,12 +29,17 @@ def href_url_index_0(selector: str, soup: BeautifulSoup):
 
 def all_href_urls(selector: str, soup: BeautifulSoup):
     elements = soup.select(selector + ' a')
-    return [a['href'] for a in elements]
+    return [a['href'] for a in elements if a.get('href', '') != '']
 
 
 def all_images_src(selector: str, soup: BeautifulSoup):
     images = soup.select(selector + ' img')
     return [img['src'] for img in images]
+
+
+def image_src(selector: str, soup: BeautifulSoup):
+    img = soup.select(selector + ' img')[0]
+    return img['src'] if img.get('src', '') != '' else ''
 
 
 def tag_text(selector: str, soup: BeautifulSoup):
