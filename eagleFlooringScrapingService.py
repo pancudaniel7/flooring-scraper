@@ -3,7 +3,7 @@ from selenium.webdriver.phantomjs.webdriver import WebDriver
 
 from config import logger
 from Product import Product
-from collectorService import get_soup_by_content, all_attributes_for_all_elements, tags_text, \
+from collectorService import get_soup_by_content, attribute_value_for_all_elements, tags_text, \
     tag_text
 from htmlTemplateService import create_second_product_template
 from seleniumCollectorService import get_page_source_until_selector
@@ -30,7 +30,7 @@ def get_product_urls(driver: WebDriver, url: str):
                                                   '.hb-main-content .products a',
                                                   TIME_OUT_URL)
     soup = get_soup_by_content(page_content)
-    category_urls = set(all_attributes_for_all_elements('.hb-main-content .products a', 'href', soup))
+    category_urls = set(attribute_value_for_all_elements('.hb-main-content .products a', 'href', soup))
     return category_urls
 
 
@@ -44,7 +44,7 @@ def get_all_products_details(driver: WebDriver, urls: []):
                                                       '.woocommerce-product-gallery__wrapper a',
                                                       TIME_OUT_PRODUCT)
         soup = get_soup_by_content(page_content)
-        image = all_attributes_for_all_elements(
+        image = attribute_value_for_all_elements(
             '.woocommerce-product-gallery__wrapper a', 'href', soup)[0]
         title = tag_text('.summary.entry-summary h3 span', soup).lower().title()
         product_code = tags_text('.sku_wrapper .sku', soup)[0]

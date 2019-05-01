@@ -1,10 +1,7 @@
-import gc
 import os
 
+import bruceScrapingService
 import csvService
-import fuzionScrapingService
-import knoasScrapingService
-import mohawkScrapingService
 import productToShopifyCsvTransformer
 from config import initialise_configurations, logger, csv_template_dir, TEMPLATE_FILE_NAME
 
@@ -104,15 +101,22 @@ def main():
     #                                     shopify_csv_array)
 
     # Fuzion
-    products_details = fuzionScrapingService.get_products_details()
+    # products_details = fuzionScrapingService.get_products_details()
+    # shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
+    # csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
+    #                           csv_template_dir() + fuzionScrapingService.FUZION_CSV_FILE_NAME)
+    # csvService.append_csv_array_to_file(csv_template_dir() + fuzionScrapingService.FUZION_CSV_FILE_NAME,
+    #                                     shopify_csv_array)
+
+    # Bruce
+    products_details = bruceScrapingService.get_products_details()
     shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
     csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
-                              csv_template_dir() + fuzionScrapingService.FUZION_CSV_FILE_NAME)
-    csvService.append_csv_array_to_file(csv_template_dir() + fuzionScrapingService.FUZION_CSV_FILE_NAME,
+                              csv_template_dir() + bruceScrapingService.BRUCE_CSV_FILE_NAME)
+    csvService.append_csv_array_to_file(csv_template_dir() + bruceScrapingService.BRUCE_CSV_FILE_NAME,
                                         shopify_csv_array)
 
     logger.info('Finish')
-    # os.system('poweroff')
-
+    os.system('poweroff')
 
 main()

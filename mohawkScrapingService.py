@@ -5,7 +5,7 @@ from config import logger
 from Product import Product
 import htmlTemplateService
 from collectorService import get_soup_by_content, all_href_urls, \
-    all_attributes_for_all_elements, tag_text, tags_text, inner_html_str_index_0, extract_product_details_from_html
+    attribute_value_for_all_elements, tag_text, tags_text, inner_html_str_index_0, extract_product_details_from_html
 from seleniumCollectorService import get_page_source_until_selector, get_page_source_until_selector_with_delay
 
 BASE_URL = 'https://www.mohawkflooring.com'
@@ -49,8 +49,8 @@ def get_product_urls_per_page(driver: WebDriver, category_url: str, category_bas
     driver.get(category_url)
     page_content = get_page_source_until_selector(driver, '#related-color', TIME_OUT_DYNAMIC)
     soup = get_soup_by_content(page_content)
-    data_style_ids = all_attributes_for_all_elements('.slider-container div > a', 'data-style-id', soup)
-    data_color_ids = all_attributes_for_all_elements('.slider-container div > a', 'data-color-id', soup)
+    data_style_ids = attribute_value_for_all_elements('.slider-container div > a', 'data-style-id', soup)
+    data_color_ids = attribute_value_for_all_elements('.slider-container div > a', 'data-color-id', soup)
     product_category_title = tag_text('.column.main-info h2', soup).replace(' ', '-')
     products_titles = [text.replace(' ', '-') for text in
                        tags_text('.slider-container span[class^="ng-binding"]', soup)]
@@ -76,7 +76,7 @@ def get_product_details(driver: WebDriver, product_url: str):
     driver.get(product_url)
     page_content = get_page_source_until_selector_with_delay(driver, '.swatch-image', TIME_OUT_PRODUCT, TIME_DELAY)
     soup = get_soup_by_content(page_content)
-    image = all_attributes_for_all_elements('.swatch-image', 'back-img', soup)[0]
+    image = attribute_value_for_all_elements('.swatch-image', 'back-img', soup)[0]
     product_category_title = tag_text('.column.main-info h2', soup)
     product_title = tag_text('.product-details .column.swatches-section h2', soup)
     product_details = inner_html_str_index_0('.content .specifications-table', soup)

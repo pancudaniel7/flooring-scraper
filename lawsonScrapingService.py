@@ -2,10 +2,11 @@
 from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
+import collectorService
 from Product import Product
 import htmlTemplateService
 from collectorService import get_soup_by_content, all_href_urls, tag_text, \
-    all_attributes_for_all_elements, inner_html_str_index_0, tags_text
+    attribute_value_for_all_elements, inner_html_str_index_0, tags_text
 from seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'http://lawsonfloors.com/portfolio_category'
@@ -35,16 +36,16 @@ def get_all_products_details(driver: WebDriver, category_urls: []):
         driver.get(category_url)
         page_content = get_page_source_until_selector(driver, '.mask', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
-        first_image = all_attributes_for_all_elements('.floor-visual.box .bg-cover', 'style', soup)[0].replace(
+        first_image = attribute_value_for_all_elements('.floor-visual.box .bg-cover', 'style', soup)[0].replace(
             'background-image:url(', '').replace(');', '')
-        second_image = all_attributes_for_all_elements(
+        second_image = attribute_value_for_all_elements(
             '.box.floor-slideshow.slideshow.gallery-js-ready.autorotation-disabled .bg-cover', 'style', soup)[
             0].replace('background-image:url(', '').replace(');', '')
 
         product_title = tag_text('.slide .text-holder h1', soup)
         product_details = inner_html_str_index_0('.box .info-list', soup)
-        product_details_fields = htmlTemplateService.extract_product_details_from_html(product_details, '.name',
-                                                                                       '.value')
+        product_details_fields = collectorService.extract_product_details_from_html(product_details, '.name',
+                                                                                    '.value')
         product_details = htmlTemplateService.create_product_template(product_details_fields[0],
                                                                       product_details_fields[1]).replace('::',
                                                                                                          ':')

@@ -5,7 +5,7 @@ from config import logger
 from Collector import Collector
 from Product import Product
 import htmlTemplateService
-from collectorService import get_soup_by_content, all_attributes_for_all_elements, all_href_urls, \
+from collectorService import get_soup_by_content, attribute_value_for_all_elements, all_href_urls, \
     inner_html, tags_text
 from seleniumCollectorService import get_page_source_until_selector
 
@@ -36,7 +36,7 @@ def get_product_collectors_urls(driver: WebDriver, urls: []):
         driver.get(url)
         page_content = get_page_source_until_selector(driver, '.nonblock', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
-        product_urls = all_attributes_for_all_elements('.clearfix.colelem.shared_content a', 'href', soup)
+        product_urls = attribute_value_for_all_elements('.clearfix.colelem.shared_content a', 'href', soup)
         collectors.extend(
             [Collector(BASE_URL + product_url, url.replace('.html', '').replace(BASE_URL, '')) for product_url in
              product_urls])
@@ -54,7 +54,7 @@ def get_all_products_details(driver: WebDriver, collectors: [Collector]):
                                                       '.PamphletWidget .nonblock.nontext.Container.museBGSize.grpelem.wp-panel.wp-panel-active',
                                                       TIME_OUT_PRODUCT)
         soup = get_soup_by_content(page_content)
-        images = all_attributes_for_all_elements(
+        images = attribute_value_for_all_elements(
             '.PamphletWidget .nonblock.nontext.Container.museBGSize.grpelem.wp-panel.wp-panel-active', 'href', soup)
         main_image = BASE_URL + images[0]
         product_title = collector.url.replace('.html', '').replace(BASE_URL, '').title()
