@@ -54,6 +54,10 @@ def inner_html(selector: str, soup: BeautifulSoup):
     return soup.select(selector)
 
 
+def inner_html_str(selector: str, soup: BeautifulSoup):
+    return [str(html).replace('\r', '').replace('\n', '') for html in soup.select(selector)]
+
+
 def inner_html_str_index_0(selector: str, soup: BeautifulSoup):
     return str(soup.select(selector)[0]).replace('\r', '').replace('\n', '')
 
