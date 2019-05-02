@@ -135,7 +135,7 @@ def main():
                                         shopify_csv_array)
 
     logger.info('Finish')
-    # os.system('poweroff')
+    os.system('poweroff')
 
 
 main()
