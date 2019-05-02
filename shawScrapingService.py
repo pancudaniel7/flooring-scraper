@@ -60,6 +60,8 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
     id = 1
     logger.debug('Products size: {}'.format(len(product_urls)))
     for product_url in product_urls:
+        if id % 30 == 0:
+            firefoxService.renew_session(driver)
         logger.debug('Getting details for product url: {}'.format(product_url))
         driver.get(product_url)
         page_content = get_page_source_until_selector_with_delay(driver,
@@ -72,7 +74,8 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
         product_type = tag_text('#sections > div > div > div > div > ul > li.box.box1.category.no-left', soup).title()
         image = attribute_value_element('#s7room_flyout > div.s7staticimage > img:nth-child(1)', 'src', soup)
         product_labels = tags_text('#specs-content-wrap > div > div > h3', soup)
-        product_values = inner_html_str('#specs-content-wrap > div > div.specs-content-cell:nth-child(2)', soup)
+        product_values = inner_html_str(
+            '#specs-content-wrap > div > div.specs-content-cell:nth-child(2) > :not(.tooltip-wrap)', soup)
         product_values = list(map(lambda value: re.sub(r'<[^>]+>', '', value), product_values))
         details = htmlTemplateService.create_product_template(product_labels, product_values)
         tags = ','.join(product_values)
@@ -82,9 +85,9 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
     return products
 
 
-def get_products_details():
+def get_products_details(base_url):
     driver = firefoxService.renew_session()
-    product_category_urls = get_hardwood_category_urls(driver, HARDWOOD_URL)
+    product_category_urls = get_hardwood_category_urls(driver, base_url)
     product_urls = get_product_urls(driver, product_category_urls)
     driver = firefoxService.renew_session(driver)
     products_details = get_all_products_details(driver, product_urls)
