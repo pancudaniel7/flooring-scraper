@@ -43,11 +43,11 @@ def image_src(selector: str, soup: BeautifulSoup):
 
 
 def tag_text(selector: str, soup: BeautifulSoup):
-    return soup.select(selector)[0].text.strip() if len(soup.select(selector)) > 0 else ''
+    return soup.select(selector)[0].text.replace('\r', '').replace('\n', '').strip() if len(soup.select(selector)) > 0 else ''
 
 
 def tags_text(selector: str, soup: BeautifulSoup):
-    return list(map(lambda x: str(x.text).replace('\n', '').strip(), soup.select(selector)))
+    return list(map(lambda x: str(x.text).replace('\r', '').replace('\n', '').strip(), soup.select(selector)))
 
 
 def inner_html(selector: str, soup: BeautifulSoup):
