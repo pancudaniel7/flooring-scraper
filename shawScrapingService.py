@@ -61,7 +61,7 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
     logger.debug('Products size: {}'.format(len(product_urls)))
     for product_url in product_urls:
         if id % 30 == 0:
-            firefoxService.renew_session(driver)
+            driver = firefoxService.renew_session(driver)
         logger.debug('Getting details for product url: {}'.format(product_url))
         driver.get(product_url)
         page_content = get_page_source_until_selector_with_delay(driver,

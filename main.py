@@ -1,6 +1,5 @@
 import os
 
-import bruceScrapingService
 import csvService
 import productToShopifyCsvTransformer
 import shawScrapingService
