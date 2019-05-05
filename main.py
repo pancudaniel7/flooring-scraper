@@ -120,16 +120,17 @@ def main():
 
     # Shaw
     # hardwood
-    products_details = shawScrapingService.get_products_details(shawScrapingService.HARDWOOD_URL)
-    shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
-    csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
-                              csv_template_dir() + shawScrapingService.SHAW_HARDWOOD_CSV_FILE_NAME)
-    csvService.append_csv_array_to_file(csv_template_dir() + shawScrapingService.SHAW_HARDWOOD_CSV_FILE_NAME,
-                                        shopify_csv_array)
+    # products_details = shawScrapingService.get_products_details(shawScrapingService.HARDWOOD_URL)
+    #   shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
+    #   csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
+    #                              csv_template_dir() + shawScrapingService.SHAW_HARDWOOD_CSV_FILE_NAME)
+    #    csvService.append_csv_array_to_file(csv_template_dir() + shawScrapingService.SHAW_HARDWOOD_CSV_FILE_NAME,
+    # shopify_csv_array)
 
     # carpet
     products_details = shawScrapingService.get_products_details(shawScrapingService.CARPET_URL)
     shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
+    products_details.clear()
     csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
                               csv_template_dir() + shawScrapingService.SHAW_CARPET_CSV_FILE_NAME)
     csvService.append_csv_array_to_file(csv_template_dir() + shawScrapingService.SHAW_CARPET_CSV_FILE_NAME,
