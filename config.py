@@ -14,7 +14,11 @@ def resource_dir():
 
 
 def csv_template_dir():
-    return resource_dir() + 'csv-template/'
+    return resource_dir() + 'csv/'
+
+
+def url_file_dir():
+    return resource_dir() + 'url-file/'
 
 
 logger = logging.getLogger()
