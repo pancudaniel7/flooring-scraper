@@ -4,9 +4,10 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 
 import firefoxService
 import htmlTemplateService
+import urlFileService
 from Product import Product
 from collectorService import get_soup_by_content, tag_text, \
-    tags_text, all_href_urls, image_src, attribute_value_for_all_elements, attribute_value_element, inner_html, \
+    tags_text, all_href_urls, attribute_value_for_all_elements, attribute_value_element, inner_html, \
     inner_html_str
 from config import logger
 from seleniumCollectorService import get_page_source_until_selector_with_delay, get_page_source_until_selector
@@ -14,8 +15,10 @@ from seleniumCollectorService import get_page_source_until_selector_with_delay, 
 BASE_URL = 'https://shawfloors.com'
 HARDWOOD_URL = BASE_URL + '/flooring/hardwood/'
 CARPET_URL = BASE_URL + '/flooring/carpet/'
+
 SHAW_HARDWOOD_CSV_FILE_NAME = 'shaw-hardwood-template.csv'
 SHAW_CARPET_CSV_FILE_NAME = 'shaw-carpet-template.csv'
+SHAW_CARPET_URL_FILE_NAME = 'shaw-carpet-url.txt'
 
 VENDOR_NAME = 'Shaw Flooring'
 
@@ -49,7 +52,7 @@ def get_product_urls(driver: WebDriver, category_urls: []):
     id = 1
     logger.debug('Products category url size: {}'.format(len(category_urls)))
     for category_url in category_urls:
-        if id % 10 == 0:
+        if id % 100 == 0:
             driver = firefoxService.renew_session(driver)
         logger.debug('Getting product urls for category url {}:{}'.format(id, category_url))
         driver.get(category_url)
@@ -65,7 +68,7 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
     id = 1
     logger.debug('Products size: {}'.format(len(product_urls)))
     for product_url in product_urls:
-        if id % 10 == 0:
+        if id % 100 == 0:
             driver = firefoxService.renew_session(driver)
         logger.debug('Getting details for product url {}:{}'.format(id, product_url))
         driver.get(product_url)
@@ -96,12 +99,18 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
     return products
 
 
-def get_products_details(base_url):
+def get_products_details(base_url: str, product_urls_number: int = 9999, product_url_file_path: str = ''):
     driver = firefoxService.renew_session()
-    product_category_urls = get_hardwood_category_urls(driver, base_url)
-    product_urls = get_product_urls(driver, product_category_urls)
-    product_urls = set(product_urls)
+    if urlFileService.is_url_file_empty(product_url_file_path):
+        product_category_urls = get_hardwood_category_urls(driver, base_url)
+        product_urls = get_product_urls(driver, product_category_urls)
+        product_urls = set(product_urls)
+        product_urls = list(product_urls)
+        urlFileService.write_url_list_to_file(product_url_file_path, product_urls)
+    else:
+        product_urls = urlFileService.read_url_list_from_file(product_url_file_path)
+
     driver = firefoxService.renew_session(driver)
-    products_details = get_all_products_details(driver, product_urls)
+    products_details = get_all_products_details(driver, product_urls[:product_urls_number])
     driver.quit()
     return products_details
