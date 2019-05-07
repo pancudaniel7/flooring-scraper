@@ -26,7 +26,6 @@ def main():
     shaw_carpet_collecting()
 
     logger.info('Finish')
-    os.system('poweroff')
 
 
 main()
