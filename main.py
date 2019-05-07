@@ -5,18 +5,13 @@ import os
 import csvService
 import productToShopifyCsvTransformer
 import shawScrapingService
-<<<<<<< HEAD
-<<<<<<< HEAD
-from config import initialise_configurations, logger, csv_template_dir, TEMPLATE_FILE_NAME, url_file_dir
-=======
 import republicScrapingService
-from config import initialise_configurations, logger, csv_template_dir, TEMPLATE_FILE_NAME
-=======
+
 from config import initialise_configurations, logger, csv_template_dir, TEMPLATE_FILE_NAME, url_file_dir
 
 
 def shaw_carpet_collecting():
-    products_details = shawScrapingService.get_products_details(shawScrapingService.CARPET_URL, 2000,
+    products_details = shawScrapingService.get_products_details(shawScrapingService.CARPET_URL, 1000,
                                                                 url_file_dir() + shawScrapingService.SHAW_CARPET_URL_FILE_NAME)
     shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
     products_details.clear()
@@ -24,94 +19,25 @@ def shaw_carpet_collecting():
                               csv_template_dir() + shawScrapingService.SHAW_CARPET_CSV_FILE_NAME)
     csvService.append_csv_array_to_file(csv_template_dir() + shawScrapingService.SHAW_CARPET_CSV_FILE_NAME,
                                         shopify_csv_array)
->>>>>>> modified main to look similar as develop one
 
 
-def main():
-    initialise_configurations()
-    logger.info('Start collecting data')
-
-    shaw_carpet_collecting()
-
-<<<<<<< HEAD
-    # products_details = eagleFlooringScrapingService.get_laminate_products_details()
-    # shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
-    # csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
-    #                           csv_template_dir() + eagleFlooringScrapingService.EAGLE_LAMINATE_CSV_FILE_NAME)
-    # csvService.append_csv_array_to_file(csv_template_dir() + eagleFlooringScrapingService.EAGLE_LAMINATE_CSV_FILE_NAME,
-    #                                     shopify_csv_array)
->>>>>>> Created republic service for Laminated
-
-
-<<<<<<< HEAD
-def shaw_carpet_collecting():
-    products_details = shawScrapingService.get_products_details(shawScrapingService.CARPET_URL, 1000,
-                                                                url_file_dir() + shawScrapingService.SHAW_CARPET_URL_FILE_NAME)
-=======
-    # Mullican
-    # products_details = mullicanFlooringScrapingService.get_products_details()
-    # shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
-    # csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
-    #                           csv_template_dir() + mullicanFlooringScrapingService.MULLICAN_CSV_FILE_NAME)
-    # csvService.append_csv_array_to_file(csv_template_dir() + mullicanFlooringScrapingService.MULLICAN_CSV_FILE_NAME,
-    #                                     shopify_csv_array)
-
-    # Fuzion
-    # products_details = fuzionScrapingService.get_products_details()
-    # shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
-    # csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
-    #                           csv_template_dir() + fuzionScrapingService.FUZION_CSV_FILE_NAME)
-    # csvService.append_csv_array_to_file(csv_template_dir() + fuzionScrapingService.FUZION_CSV_FILE_NAME,
-    #                                     shopify_csv_array)
-
-    # Bruce
-    # products_details = bruceScrapingService.get_products_details()
-    # shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
-    # csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
-    #                           csv_template_dir() + bruceScrapingService.BRUCE_CSV_FILE_NAME)
-    # csvService.append_csv_array_to_file(csv_template_dir() + bruceScrapingService.BRUCE_CSV_FILE_NAME,
-    #                                     shopify_csv_array)
-
-    # Shaw
-    # hardwood
-    # products_details = shawScrapingService.get_products_details(shawScrapingService.HARDWOOD_URL)
-    # shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
-    # csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
-    #                           csv_template_dir() + shawScrapingService.SHAW_HARDWOOD_CSV_FILE_NAME)
-    # csvService.append_csv_array_to_file(csv_template_dir() + shawScrapingService.SHAW_HARDWOOD_CSV_FILE_NAME,
-    #                                     shopify_csv_array)
-
-    # carpet
-    # products_details = shawScrapingService.get_products_details(shawScrapingService.CARPET_URL)
-    # shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
-    # csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
-    #                           csv_template_dir() + shawScrapingService.SHAW_CARPET_CSV_FILE_NAME)
-    # csvService.append_csv_array_to_file(csv_template_dir() + shawScrapingService.SHAW_CARPET_CSV_FILE_NAME,
-    #                                     shopify_csv_array)
-
-    #Replublic
-    #laminate
-    products_details = republicScrapingService.get_products_details(republicScrapingService.LAMINATED_URL)
->>>>>>> Created republic service for Laminated
+def republic_laminate_collecting():
+    products_details = republicScrapingService.get_products_details(republicScrapingService.LAMINATED_URL, 'Laminated')
     shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
     products_details.clear()
     csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,
                               csv_template_dir() + republicScrapingService.REPUBLIC_LAMINATED_CSV_FILE_NAME)
     csvService.append_csv_array_to_file(csv_template_dir() + republicScrapingService.REPUBLIC_LAMINATED_CSV_FILE_NAME,
                                         shopify_csv_array)
-<<<<<<< HEAD
 
 
 def main():
     initialise_configurations()
     logger.info('Start collecting data')
 
-    shaw_carpet_collecting()
+    republic_laminate_collecting()
+    # shaw_carpet_collecting()
 
-=======
->>>>>>> Created republic service for Laminated
-=======
->>>>>>> modified main to look similar as develop one
     logger.info('Finish')
     os.system('poweroff')
 
