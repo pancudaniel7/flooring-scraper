@@ -24,9 +24,17 @@ def url_file_dir():
 logger = logging.getLogger()
 
 
+def clean_logs(dir):
+    test = os.listdir(dir)
+    for item in test:
+        if item.endswith('.log'):
+            os.remove(os.path.join(dir, item))
+
+
 def logging_config():
     logger.setLevel(logging.DEBUG)
 
+    clean_logs(resource_dir())
     file_handler = logging.FileHandler(
         '{0}/{1}.log'.format(resource_dir(), datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     log_formatter = logging.Formatter('%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s')
