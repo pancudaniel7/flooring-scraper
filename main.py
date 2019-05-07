@@ -4,6 +4,7 @@ import csvService
 import productToShopifyCsvTransformer
 import shawScrapingService
 from config import initialise_configurations, logger, csv_template_dir, TEMPLATE_FILE_NAME, url_file_dir
+import republicScrapingService
 
 
 def shaw_carpet_collecting(counter: int):
