@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-import os
-
 import csvService
 import productToShopifyCsvTransformer
 import shawScrapingService
@@ -23,7 +21,8 @@ def main():
     initialise_configurations()
     logger.info('Start collecting data')
 
-    shaw_carpet_collecting()
+    for counter in range(0, 7):
+        shaw_carpet_collecting()
 
     logger.info('Finish')
 

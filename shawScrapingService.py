@@ -112,7 +112,8 @@ def get_products_details(base_url: str, product_urls_number: int = 9999, product
         product_urls = list(product_urls)
         urlFileService.write_url_list_to_file(product_url_file_path, product_urls)
     else:
-        product_urls = urlFileService.read_url_list_from_file(product_url_file_path)
+        product_urls = urlFileService.read_url_list_from_file(product_url_file_path)[:1000]
+        urlFileService.delete_lines_in_url_file(product_url_file_path, 1000)
 
     driver = firefoxService.renew_session(driver)
     products_details = get_all_products_details(driver, product_urls[:product_urls_number])
