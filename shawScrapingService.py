@@ -65,37 +65,41 @@ def get_product_urls(driver: WebDriver, category_urls: []):
 
 def get_all_products_details(driver: WebDriver, product_urls: []):
     products = []
-    id = 1
-    logger.debug('Products size: {}'.format(len(product_urls)))
-    for product_url in product_urls:
-        if id % 100 == 0:
-            driver = firefoxService.renew_session(driver)
-        logger.debug('Getting details for product url {}:{}'.format(id, product_url))
-        driver.get(product_url)
-        page_content = get_page_source_until_selector_with_delay(driver,
-                                                                 'img',
-                                                                 TIME_OUT_URL, TIME_DELAY)
-        soup = get_soup_by_content(page_content)
-        title = tag_text('#sections > div > div > div > div > ul > li.box.box3.separator-left > span > h2',
-                         soup).title()
-        collection = tag_text('#sections > div > div > div > div > ul > li.box.box3.separator-left > h1', soup)
-        product_type = tag_text('#sections > div > div > div > div > ul > li.box.box1.category.no-left', soup).title()
+    try:
+        id = 1
+        logger.debug('Products size: {}'.format(len(product_urls)))
+        for product_url in product_urls:
+            if id % 100 == 0:
+                driver = firefoxService.renew_session(driver)
+            logger.debug('Getting details for product url {}:{}'.format(id, product_url))
+            driver.get(product_url)
+            page_content = get_page_source_until_selector_with_delay(driver,
+                                                                     'img',
+                                                                     TIME_OUT_URL, TIME_DELAY)
+            soup = get_soup_by_content(page_content)
+            title = tag_text('#sections > div > div > div > div > ul > li.box.box3.separator-left > span > h2',
+                             soup).title()
+            collection = tag_text('#sections > div > div > div > div > ul > li.box.box3.separator-left > h1', soup)
+            product_type = tag_text('#sections > div > div > div > div > ul > li.box.box1.category.no-left',
+                                    soup).title()
 
-        product_code = inner_html('#sections > div > div > div > div > ul > li.box.box2', soup)
-        product_code = product_code[0].next.replace(
-            'Style No.', '').replace('\r', '').replace('\n', '').strip() if len(product_code) > 0 else ''
-        image = attribute_value_element('#s7room_flyout > div.s7staticimage > img:nth-child(1)', 'src', soup)
+            product_code = inner_html('#sections > div > div > div > div > ul > li.box.box2', soup)
+            product_code = product_code[0].next.replace(
+                'Style No.', '').replace('\r', '').replace('\n', '').strip() if len(product_code) > 0 else ''
+            image = attribute_value_element('#s7room_flyout > div.s7staticimage > img:nth-child(1)', 'src', soup)
 
-        product_labels = tags_text('#specs-content-wrap > div > div > h3', soup)
-        product_values = inner_html_str(
-            '#specs-content-wrap > div > div.specs-content-cell:nth-child(2) > :not(.tooltip-wrap)', soup)
-        product_values = list(map(lambda value: re.sub(r'<[^>]+>', '', value), product_values))
-        details = htmlTemplateService.create_product_template(product_labels, product_values)
-        tags = ','.join(product_values)
-        tags += ',' + collection
-        products.append(
-            Product(title + str(id), image, '', title, VENDOR_NAME, product_code, product_type, details, tags))
-        id += 1
+            product_labels = tags_text('#specs-content-wrap > div > div > h3', soup)
+            product_values = inner_html_str(
+                '#specs-content-wrap > div > div.specs-content-cell:nth-child(2) > :not(.tooltip-wrap)', soup)
+            product_values = list(map(lambda value: re.sub(r'<[^>]+>', '', value), product_values))
+            details = htmlTemplateService.create_product_template(product_labels, product_values)
+            tags = ','.join(product_values)
+            tags += ',' + collection
+            products.append(
+                Product(title + str(id), image, '', title, VENDOR_NAME, product_code, product_type, details, tags))
+            id += 1
+    except Exception as e:
+        logger.debug('Exception message: {}'.format(e))
     return products
 
 
