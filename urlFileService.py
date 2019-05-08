@@ -18,3 +18,12 @@ def read_url_list_from_file(url_file_path: str):
 
 def is_url_file_empty(url_file_path: str):
     return os.stat(url_file_path).st_size == 0 if os.path.isfile(url_file_path) else True
+
+
+def delete_lines_in_url_file(url_file_path: str, lines_number: int):
+    url_file = open(url_file_path, 'r')
+    lines = url_file.readlines()[lines_number:]
+    url_file.close()
+    url_file = open(url_file_path, 'w')
+    url_file.writelines(lines)
+    url_file.close()
