@@ -1,7 +1,6 @@
 .idea/**
 *.iml
 **/*.log
-**/__*__*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

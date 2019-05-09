@@ -104,7 +104,8 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
     return products
 
 
-def get_products_details(base_url: str, product_urls_number: int = 9999, product_url_file_path: str = ''):
+def get_products_details(base_url: str, product_urls_number: int = 9999, counter: int = 0,
+                         product_url_file_path: str = ''):
     driver = firefoxService.renew_session()
     if urlFileService.is_url_file_empty(product_url_file_path):
         product_category_urls = get_hardwood_category_urls(driver, base_url)
@@ -113,8 +114,9 @@ def get_products_details(base_url: str, product_urls_number: int = 9999, product
         product_urls = list(product_urls)
         urlFileService.write_url_list_to_file(product_url_file_path, product_urls)
     else:
-        product_urls = urlFileService.read_url_list_from_file(product_url_file_path)[:1000]
-        urlFileService.delete_lines_in_url_file(product_url_file_path, 1000)
+        first_index = product_urls_number * counter
+        last_index = first_index + product_urls_number
+        product_urls = urlFileService.read_url_list_from_file(product_url_file_path)[first_index:last_index]
 
     driver = firefoxService.renew_session(driver)
     products_details = get_all_products_details(driver, product_urls[:product_urls_number])
