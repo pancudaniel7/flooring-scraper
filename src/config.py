@@ -2,11 +2,14 @@ import datetime
 import logging
 import os
 
+os.path.abspath(__file__)
+os.chdir('..')
+ROOT_DIR = os.path.abspath(os.curdir) + '/'
 TEMPLATE_FILE_NAME = 'product-template.csv'
 
 
 def root_dir():
-    return os.path.dirname(os.path.abspath(__file__)) + '/'
+    return ROOT_DIR
 
 
 def resource_dir():

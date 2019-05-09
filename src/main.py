@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-import csvService
-import productToShopifyCsvTransformer
-import shawScrapingService
-from config import initialise_configurations, logger, csv_template_dir, TEMPLATE_FILE_NAME, url_file_dir
+from config import url_file_dir, csv_template_dir, initialise_configurations, logger
+from service.csv import csvService
+from service.supplier import shawScrapingService
+from transformer import productToShopifyCsvTransformer
 
 
 def shaw_carpet_collecting():

@@ -1,5 +1,5 @@
-from Product import Product
-from ShopifyCsv import ShopifyCsv
+from model.Product import Product
+from model.ShopifyCsv import ShopifyCsv
 
 
 def product_to_shopify(product: Product):

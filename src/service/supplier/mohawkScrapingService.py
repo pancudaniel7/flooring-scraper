@@ -2,11 +2,12 @@ from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
 from config import logger
-from Product import Product
-import htmlTemplateService
-from collectorService import get_soup_by_content, all_href_urls, \
-    attribute_value_for_all_elements, tag_text, tags_text, inner_html_str_index_0, extract_product_details_from_html
-from seleniumCollectorService import get_page_source_until_selector, get_page_source_until_selector_with_delay
+from model.Product import Product
+from service.collector.collectorService import get_soup_by_content, all_href_urls, attribute_value_for_all_elements, \
+    tag_text, tags_text, inner_html_str_index_0, extract_product_details_from_html
+from service.html import htmlTemplateService
+from service.supplier.seleniumCollectorService import get_page_source_until_selector_with_delay, \
+    get_page_source_until_selector
 
 BASE_URL = 'https://www.mohawkflooring.com'
 

@@ -3,11 +3,9 @@ import re
 from selenium import webdriver
 from selenium.webdriver.firefox.webdriver import WebDriver
 
-import htmlTemplateService
-from Product import Product
-from collectorService import get_soup_by_content, inner_html_str_index_0, tags_text, all_href_urls
-from config import logger
-from seleniumCollectorService import get_page_source_until_selector_with_delay
+from model.Product import Product
+from service.collector.collectorService import get_soup_by_content, all_href_urls, tags_text, inner_html_str_index_0
+from service.supplier.seleniumCollectorService import get_page_source_until_selector_with_delay
 
 BASE_URL = 'https://www.fuzionflooring.com'
 BISTRO_URL = BASE_URL + '/bistro-collection.html'

@@ -1,16 +1,16 @@
 import re
 
+from config import logger
 from selenium.webdriver.firefox.webdriver import WebDriver
 
-import firefoxService
-import htmlTemplateService
-import urlFileService
-from Product import Product
-from collectorService import get_soup_by_content, tag_text, \
-    tags_text, all_href_urls, attribute_value_for_all_elements, attribute_value_element, inner_html, \
-    inner_html_str
-from config import logger
-from seleniumCollectorService import get_page_source_until_selector_with_delay, get_page_source_until_selector
+from model.Product import Product
+from service.collector.collectorService import get_soup_by_content, attribute_value_for_all_elements, tag_text, \
+    all_href_urls, inner_html, attribute_value_element, tags_text, inner_html_str
+from service.html import htmlTemplateService
+from service.session import firefoxService
+from service.supplier.seleniumCollectorService import get_page_source_until_selector, \
+    get_page_source_until_selector_with_delay
+from service.url import urlFileService
 
 BASE_URL = 'https://shawfloors.com'
 HARDWOOD_URL = BASE_URL + '/flooring/hardwood/'
@@ -86,6 +86,7 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
             product_code = inner_html('#sections > div > div > div > div > ul > li.box.box2', soup)
             product_code = product_code[0].next.replace(
                 'Style No.', '').replace('\r', '').replace('\n', '').strip() if len(product_code) > 0 else ''
+
             image = attribute_value_element('#s7room_flyout > div.s7staticimage > img:nth-child(1)', 'src', soup)
 
             product_labels = tags_text('#specs-content-wrap > div > div > h3', soup)

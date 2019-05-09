@@ -4,12 +4,13 @@ from config import logger
 from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
-import htmlTemplateService
-from Collector import Collector
-from Product import Product
-from collectorService import get_soup_by_content, all_href_urls, tag_text, \
-    inner_html_str_index_0, tags_text, extract_product_details_from_html
-from seleniumCollectorService import get_page_source_until_selector
+from service.collector.collectorService import get_soup_by_content, tag_text, inner_html_str_index_0, \
+    extract_product_details_from_html, tags_text
+from service.html import htmlTemplateService
+from model.Collector import Collector
+from model.Product import Product
+
+from service.supplier.seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'http://www.regalhardwoods.com'
 CATEGORIES_URL = BASE_URL + '/floors'

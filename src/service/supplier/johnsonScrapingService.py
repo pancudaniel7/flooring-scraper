@@ -2,10 +2,10 @@ import requests
 from requests import Session
 
 from config import logger
-from Product import Product
-from collectorImageService import first_img_url_under_pixel_limit, \
+from model.Product import Product
+from service.collector.collectorImageService import first_img_url_under_pixel_limit, \
     SHOPIFY_MEGA_PIXELS_IMAGE_RESOLUTION_LIMIT
-from collectorService import all_href_urls, get_page_soup, all_images_src, tag_text, \
+from service.collector.collectorService import all_href_urls, get_page_soup, all_images_src, tag_text, \
     inner_html_str_index_0, tags_text
 
 PRODUCTS_URL = 'http://johnsonhardwood.com/products/'

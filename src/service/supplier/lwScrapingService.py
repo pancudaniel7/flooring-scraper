@@ -2,15 +2,16 @@ from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
 from config import logger
-from Collector import Collector
-from Product import Product
-import htmlTemplateService
-from collectorService import get_soup_by_content, attribute_value_for_all_elements, all_href_urls, \
+from model.Collector import Collector
+from model.Product import Product
+from service.collector.collectorService import get_soup_by_content, all_href_urls, attribute_value_for_all_elements, \
     inner_html, tags_text
-from seleniumCollectorService import get_page_source_until_selector
+from service.html import htmlTemplateService
+
+from service.supplier.seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'https://www.lwflooring.com/'
-PRODUCTS_URL = BASE_URL + 'products.html'
+PRODUCTS_URL = BASE_URL + 'products.collector'
 LW_CSV_FILE_NAME = 'lw-hardwood-template.csv'
 
 TIME_OUT_PRODUCT = 30
@@ -38,7 +39,7 @@ def get_product_collectors_urls(driver: WebDriver, urls: []):
         soup = get_soup_by_content(page_content)
         product_urls = attribute_value_for_all_elements('.clearfix.colelem.shared_content a', 'href', soup)
         collectors.extend(
-            [Collector(BASE_URL + product_url, url.replace('.html', '').replace(BASE_URL, '')) for product_url in
+            [Collector(BASE_URL + product_url, url.replace('.collector', '').replace(BASE_URL, '')) for product_url in
              product_urls])
         logger.debug('Get this product urls: {} for category url: {}'.format(product_urls, url))
     return collectors
@@ -57,7 +58,7 @@ def get_all_products_details(driver: WebDriver, collectors: [Collector]):
         images = attribute_value_for_all_elements(
             '.PamphletWidget .nonblock.nontext.Container.museBGSize.grpelem.wp-panel.wp-panel-active', 'href', soup)
         main_image = BASE_URL + images[0]
-        product_title = collector.url.replace('.html', '').replace(BASE_URL, '').title()
+        product_title = collector.url.replace('.collector', '').replace(BASE_URL, '').title()
 
         labels_html = inner_html(
             '.shadow .clearfix.colelem > .clearfix.grpelem.shared_content:nth-child({})'.format(1), soup)

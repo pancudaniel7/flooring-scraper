@@ -2,13 +2,13 @@ import re
 
 from selenium.webdriver.firefox.webdriver import WebDriver
 
-import firefoxService
-import htmlTemplateService
-from Product import Product
+from service.session import firefoxService
+from service.html import htmlTemplateService
+from model.Product import Product
 from collectorService import get_soup_by_content, tag_text, \
     tags_text, all_href_urls, attribute_value_for_all_elements, attribute_value_element
 from config import logger
-from seleniumCollectorService import get_page_source_until_selector
+from service.supplier.seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'http://www.bruce.com'
 HARDWOOD_URL = BASE_URL + '/flooring/hardwood/_/N-67o/No-'

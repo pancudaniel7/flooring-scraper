@@ -2,12 +2,12 @@
 from selenium.webdriver.phantomjs import webdriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
-import collectorService
-from Product import Product
-import htmlTemplateService
-from collectorService import get_soup_by_content, all_href_urls, tag_text, \
-    attribute_value_for_all_elements, inner_html_str_index_0, tags_text
-from seleniumCollectorService import get_page_source_until_selector
+from model.Product import Product
+from service.collector import collectorService
+from service.collector.collectorService import get_soup_by_content, all_href_urls, attribute_value_for_all_elements, \
+    tag_text, inner_html_str_index_0, tags_text
+from service.html import htmlTemplateService
+from service.supplier.seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'http://lawsonfloors.com/portfolio_category'
 ENGINEERED_WOOD_FLOORING_CATEGORY_URL = BASE_URL + '/engineered-wood-flooring'

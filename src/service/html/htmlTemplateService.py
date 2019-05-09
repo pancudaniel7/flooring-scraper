@@ -1,6 +1,3 @@
-from collectorService import get_soup_by_content, tags_text
-
-
 def create_product_template(labels: [], values: [], product_code: str = ''):
     html_content: str = '<div>'
     if product_code != '':

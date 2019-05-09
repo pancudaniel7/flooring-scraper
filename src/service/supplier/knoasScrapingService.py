@@ -3,12 +3,12 @@ import re
 from selenium import webdriver
 from selenium.webdriver.firefox.webdriver import WebDriver
 
-import htmlTemplateService
-from Product import Product
-from collectorService import get_soup_by_content, tag_text, \
-    inner_html_str_index_0, tags_text, all_href_urls
-from config import logger
-from seleniumCollectorService import get_page_source_until_selector, get_page_source_until_selector_with_delay
+from model.Product import Product
+from service.collector.collectorService import get_soup_by_content, all_href_urls, tag_text, inner_html_str_index_0, \
+    tags_text
+from service.html import htmlTemplateService
+
+from service.supplier.seleniumCollectorService import get_page_source_until_selector, get_page_source_until_selector_with_delay
 
 BASE_URL = 'https://knoasflooring.com/product-category'
 LAMINATE_URL = BASE_URL + '/laminate-floors'
