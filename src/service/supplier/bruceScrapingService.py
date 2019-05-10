@@ -2,11 +2,12 @@ import re
 
 from selenium.webdriver.firefox.webdriver import WebDriver
 
+from service.collector.collectorService import get_soup_by_content, attribute_value_for_all_elements, all_href_urls, \
+    tag_text, attribute_value_element, tags_text
 from service.session import firefoxService
 from service.html import htmlTemplateService
 from model.Product import Product
-from collectorService import get_soup_by_content, tag_text, \
-    tags_text, all_href_urls, attribute_value_for_all_elements, attribute_value_element
+
 from config import logger
 from service.supplier.seleniumCollectorService import get_page_source_until_selector
 
