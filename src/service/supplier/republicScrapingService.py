@@ -2,13 +2,13 @@ import re
 
 from selenium.webdriver.firefox.webdriver import WebDriver
 
-import firefoxService
-import htmlTemplateService
-from Product import Product
-from collectorService import get_soup_by_content
-from collectorService import all_href_urls, all_images_src, tag_text
+from service.session import firefoxService
+from service.html import htmlTemplateService
+from model.Product import Product
+from service.collector.collectorService import get_soup_by_content
+from service.collector.collectorService import all_href_urls, all_images_src, tag_text
 from config import logger
-from seleniumCollectorService import get_page_source_until_selector
+from service.supplier.seleniumCollectorService import get_page_source_until_selector
 
 BASE_URL = 'https://www.republicfloor.com/'
 LAMINATED_URL = BASE_URL + '/republic-products'
@@ -20,7 +20,7 @@ REPUBLIC_VINYL_CSV_FILE_NAME = 'republic-vinyl-template.csv'
 VENDOR_NAME = 'Republic Floor'
 
 TIME_OUT_PRODUCT = 4
-TIME_OUT_URL = 500
+TIME_OUT_URL = 600
 TIME_DELAY = 1
 
 
@@ -78,7 +78,7 @@ def get_all_products_details(driver: WebDriver, collectors: [], type: str):
             driver = firefoxService.renew_session(driver)
         logger.debug(str(id) + ' -Getting products details for product url: ' + collector)
         driver.get(collector)
-        page_content = get_page_source_until_selector(driver, 'img', TIME_OUT_URL)
+        page_content = get_page_source_until_selector(driver, '.wp2link > .wp2img > img', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
         title = tag_text('* > p:nth-child(1) > span:nth-child(1) > span', soup).strip()
         image = all_images_src('.wp2link > .wp2img', soup)[1]
