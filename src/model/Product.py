@@ -9,3 +9,13 @@ class Product(object):
         self.type = type
         self.details = details
         self.tags = tags
+
+    def __eq__(self, other):
+        return self.title == other.title \
+               and self.code == other.code \
+               and self.type == other.type
+
+    def __hash__(self):
+        return hash(('title', self.title,
+                     'code', self.code,
+                     'type', self.type))
