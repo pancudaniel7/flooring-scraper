@@ -104,6 +104,8 @@ celerybeat-schedule
 env/
 ENV/
 env.bak/
+venv/
+.venv
 
 # Spyder project settings
 .spyderproject
