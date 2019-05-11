@@ -55,7 +55,7 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
     id = 1
     logger.debug('Products size: {}'.format(len(product_urls)))
     for product_url in product_urls:
-        logger.debug('Getting details for product url: {}'.format(product_url))
+        logger.debug('Getting details for product url{}:{}'.format(id, product_url))
         if id % 100 == 0:
             logger.debug('Renew the driver session')
             driver = firefoxService.renew_session(driver)

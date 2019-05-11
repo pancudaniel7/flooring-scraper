@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import config
 from service.csv import csvService
 from service.supplier import tarkettScrapingService

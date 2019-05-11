@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 from config import url_file_dir, csv_template_dir, initialise_configurations
 from service.csv import csvService
 from service.supplier import shawScrapingService
