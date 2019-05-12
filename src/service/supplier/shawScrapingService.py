@@ -8,7 +8,7 @@ from service.collector.collectorService import get_soup_by_content, attribute_va
     all_href_urls, inner_html, attribute_value_element, tags_text, inner_html_str
 from service.html import htmlTemplateService
 from service.session import firefoxService
-from service.supplier.seleniumCollectorService import get_page_source_until_selector, \
+from service.collector.seleniumCollectorService import get_page_source_until_selector, \
     get_page_source_until_selector_with_delay
 from service.url import urlFileService
 
@@ -52,7 +52,7 @@ def get_product_urls(driver: WebDriver, category_urls: []):
     id = 1
     logger.debug('Products category url size: {}'.format(len(category_urls)))
     for category_url in category_urls:
-        if id % 100 == 0:
+        if id % 50 == 0:
             driver = firefoxService.renew_session(driver)
         logger.debug('Getting product urls for category url {}:{}'.format(id, category_url))
         driver.get(category_url)
@@ -69,7 +69,7 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
         id = 1
         logger.debug('Products size: {}'.format(len(product_urls)))
         for product_url in product_urls:
-            if id % 100 == 0:
+            if id % 50 == 0:
                 driver = firefoxService.renew_session(driver)
             logger.debug('Getting details for product url {}:{}'.format(id, product_url))
             driver.get(product_url)

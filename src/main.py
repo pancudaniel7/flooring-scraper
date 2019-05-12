@@ -2,12 +2,13 @@
 import os
 
 from config import initialise_configurations
-from controller import bruceController
+from controller import shawController
 
 
 def main():
     initialise_configurations()
-    # bruceController.bruce_collecting()
+    for counter in range(0, 9):
+        shawController.shaw_carpet_collecting(counter)
     os.system('poweroff')
 
 
