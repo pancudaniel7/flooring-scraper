@@ -6,7 +6,7 @@ from controller import bruceController
 
 def main():
     initialise_configurations()
-    bruceController.bruce_carpet_collecting()
+    bruceController.bruce_collecting()
 
 
 main()
