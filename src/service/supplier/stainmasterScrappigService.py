@@ -4,16 +4,18 @@ from config import logger
 from model.Product import Product
 from service.collector.collectorService import get_soup_by_content, tag_text, all_href_urls, tags_text, image_src
 from service.session import firefoxService
-from service.supplier.seleniumCollectorService import get_page_source_until_selector, get_page_source_after_click
+from service.collector.seleniumCollectorService import get_page_source_until_selector, get_page_source_after_click
 from service.html import htmlTemplateService
 from time import sleep
 from service.url import urlFileService
 
 BASE_URL = 'https://www.stainmaster.com'
 CARPET_URL = BASE_URL + '/carpet/products/allcarpets/'
-VINYL_1_URL = BASE_URL + '/vinyl/products/allvinyls'
+VINYL_1_URL = BASE_URL + '/vinyl/products/allvinyls/'
 STAINMASTER_CARPET_CSV_FILE_NAME = 'stainmaster-carpet-template.csv'
 STAINMASTER_VINYL_CSV_FILE_NAME = 'stainmaster-vinyl-template.csv'
+STAINMASTER_VINYL_URL_FILE_NAME = 'stainmaster_vinyl-url.txt'
+STAINMASTER_CARPET_URL_FILE_NAME = 'stainmaster-carpet-url.txt'
 VENDOR_NAME = 'StainMaster'
 
 TIME_OUT_PRODUCT = 4
@@ -25,13 +27,18 @@ def get_products_url(driver: WebDriver, url: str):
     products_url = []
     logger.debug('Getting pages number from: ' + url)
     driver.get(url)
+    sleep(10)
     page_content = get_page_source_until_selector(driver, '.pagination > li:nth-child(5) > a', TIME_OUT_URL)
-    get_page_source_after_click(driver, '.pagination > li:nth-child(5) > a', TIME_OUT_URL)
-    page_content = get_page_source_until_selector(driver,
-                                                  'div.col-xs-6 > div:nth-child(1) > div:nth-child(2) > a:nth-child(3)',
-                                                  TIME_OUT_URL)
+    driver.find_element_by_css_selector('.pagination > li:nth-child(5) > a').click()
+    sleep(10)
+    # page_content = get_page_source_after_click(driver, '.pagination > li:nth-child(5) > a', TIME_OUT_URL)
+    # page_content = get_page_source_until_selector(driver,
+    #                                               'div.col-xs-6 > div:nth-child(1) > div:nth-child(2) > a:nth-child(3)',
+    #                                               TIME_OUT_URL)
+    page_content = get_page_source_until_selector(driver, '.pagination > li:nth-child(5) > a', TIME_OUT_URL)
     soup = get_soup_by_content(page_content)
-    number_of_pages = int(tags_text('li.ng-scope:nth-child(5) > a:nth-child(1)', soup)[1].strip())
+
+    number_of_pages = int(tag_text('li.ng-scope:nth-child(5) > a', soup).strip())
     for page_number in range(1, number_of_pages + 1):
         url = url + '?pageNumber=' + str(page_number) + '&productSelect=20&Favorites=false'
         logger.debug(str(page_number) + '- Getting product url for: ' + url)
@@ -64,15 +71,9 @@ def get_all_products_details(driver: WebDriver, products_url: [], type: str):
 
         if driver.find_element_by_css_selector('.button-menu') == None:
             driver.find_element_by_css_selector('.button-menu').click()
-        # first_row_color_number = len(soup.select('.colors-container > a > div'))
         all_colors_number = int(re.sub('[^0-9]', '', tag_text('.available-in', soup)))
         for color_number in range(1, all_colors_number + 1):
             id += 1
-            # if color_number < first_row_color_number + 1:
-            #
-            #     selector = '.colors-container > a:nth-child(' + str(color_number) + ')'
-            # else:
-            #     selector = '.panel-body > a:nth-child(' + str(color_number) + ')'
             page_content = get_page_source_until_selector(driver, 'head > title', TIME_OUT_URL)
             soup = get_soup_by_content(page_content)
             title_collection = tag_text('head > title', soup).strip()
@@ -98,10 +99,7 @@ def get_all_products_details(driver: WebDriver, products_url: [], type: str):
 def get_products_details(base_url, type: str, product_urls_number: int = 9999, counter: int = 0,
                          product_url_file_path: str = ''):
     driver = firefoxService.renew_session()
-    product_urls = get_products_url(driver, base_url)
-    # driver = firefoxService.renew_session(driver)
-    # product_urls = ['https://www.stainmaster.com/Carpet/products/details/MCP0009207-COL0072399']
-    products_details = get_all_products_details(driver, product_urls, type)
+    driver = firefoxService.renew_session(driver)
     if urlFileService.is_url_file_empty(product_url_file_path):
         product_urls = get_products_url(driver, base_url)
         product_urls = set(product_urls)
