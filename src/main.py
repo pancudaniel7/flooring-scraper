@@ -1,12 +1,13 @@
 #!/usr/bin/python3
-
 from config import initialise_configurations
-from controller import marazziController
+from controller import tarkettCotroller
 
 
 def main():
     initialise_configurations()
-    marazziController.collecting()
+    tarkettCotroller.laminate_collecting()
+    tarkettCotroller.vinyl_collecting()
+    tarkettCotroller.carpet_collecting()
 
 
 main()
