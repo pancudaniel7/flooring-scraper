@@ -34,3 +34,4 @@ def carpet_collecting():
     product_details.clear()
     csvService.append_csv_array_to_file(config.csv_template_dir() + tarkettScrapingService.TARKETT_CARPET_CSV_FILE_NAME,
                                         shopify_csv_array)
+

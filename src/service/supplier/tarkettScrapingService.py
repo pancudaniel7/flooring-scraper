@@ -90,7 +90,7 @@ def get_all_products_details(driver: WebDriver, products_url: [], type: str):
         for product_id in product_ids:
             details = htmlTemplateService.create_product_template(product_labels, product_values, product_id)
             products.append(Product(title + str(id), image, '', title, VENDOR_NAME, '', type, details, tags))
-
+            id += 1
     return products
 
 
