@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 
-from config import initialise_configurations
+import config
+from controller import tarkettCotroller
 
 
 def main():
-    initialise_configurations()
-
+    config.initialise_configurations()
+    tarkettCotroller.tarkett_laminate_collecting()
+    tarkettCotroller.tarkett_vinyl_collecting()
+    tarkettCotroller.tarkett_carpet_collecting()
 
 main()
