@@ -1,10 +1,10 @@
-
 from selenium.webdriver.firefox.webdriver import WebDriver
 from config import logger
 from model.Product import Product
 from service.collector.collectorService import get_soup_by_content, tag_text, all_href_urls, tags_text
 from service.session import firefoxService
-from service.collector.seleniumCollectorService import get_page_source_until_selector
+from service.collector.seleniumCollectorService import get_page_source_until_selector, \
+    get_page_source_after_click_by_javascript_with_delay
 from service.html import htmlTemplateService
 
 BASE_URL = 'https://residential.tarkett.com'
@@ -31,13 +31,22 @@ def get_number_of_pages(driver: WebDriver, url: str):
                                                   TIME_OUT_URL)
     soup = get_soup_by_content(page_content)
     last_page_number = 1
-    if soup.find('.tksb-pagination>div:nth-last-child(2)') != None:
-        last_page_number = int(tag_text('.tksb-pagination>div:nth-last-child(2)', soup))
+    while True:
+        if soup.find('div', {'class': 'tksb-pagination-next-button'}) is not None:
+            if soup.find('div', {'class': 'tksb-pagination-next-button'}).has_attr('disabled'):
+                last_page_number = int(tag_text('.tksb-pagination>div:nth-last-child(2)', soup))
+                break
+            page_content = get_page_source_after_click_by_javascript_with_delay(driver,
+                                                                                '.tksb-pagination-next-button',
+                                                                                TIME_OUT_URL, TIME_DELAY)
+            soup = get_soup_by_content(page_content)
+        else:
+            break
     return last_page_number
 
 
 def get_products_url(driver: WebDriver, number_of_pages, initial_url: str):
-    products_url = []
+    products_url = set()
 
     i = 0
     for page_number in range(1, number_of_pages + 1):
@@ -49,8 +58,9 @@ def get_products_url(driver: WebDriver, number_of_pages, initial_url: str):
                                                       'li.image-link-sku__item:nth-child(1) > div:nth-child(1) > figure:nth-child(1) > a:nth-child(1)',
                                                       TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
-        products_url.extend([BASE_URL + url.strip() for url in all_href_urls('li.image-link-sku__item', soup)])
-    return products_url
+        for url in all_href_urls('li.image-link-sku__item', soup):
+            set.add(products_url, BASE_URL + url.strip())
+    return list(products_url)
 
 
 def get_all_products_details(driver: WebDriver, products_url: [], type: str):

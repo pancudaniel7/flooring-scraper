@@ -41,6 +41,3 @@ def tarkett_carpet_collecting():
     csvService.append_csv_array_to_file(config.csv_template_dir() + tarkettScrapingService.TARKETT_CARPET_CSV_FILE_NAME,
                                         shopify_csv_array)
 
-    tarkett_laminate_collecting()
-    tarkett_vinyl_collecting()
-    tarkett_carpet_collecting()
