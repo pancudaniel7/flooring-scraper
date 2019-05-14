@@ -10,6 +10,7 @@ class Product(object):
         self.details = details
         self.tags = tags
 
+
     def __eq__(self, other):
         return self.title == other.title \
                and self.code == other.code \
