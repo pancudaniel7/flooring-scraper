@@ -1,0 +1,12 @@
+[Unit]
+Description=Flooring scraping service
+After=syslog.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 ~/flooring-data-scraping/src/main.py
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target
