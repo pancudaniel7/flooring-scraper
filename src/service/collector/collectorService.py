@@ -1,5 +1,11 @@
 from bs4 import BeautifulSoup
+from config import logger
 from requests import Session
+from selenium.webdriver.firefox.webdriver import WebDriver
+
+from service.collector.seleniumCollectorService import get_page_source_after_click_with_delay, \
+    get_page_source_until_selector_with_delay
+from service.session import firefoxService
 
 
 def get_page_soup(session: Session, url: str):
@@ -43,7 +49,8 @@ def image_src(selector: str, soup: BeautifulSoup):
 
 
 def tag_text(selector: str, soup: BeautifulSoup):
-    return soup.select(selector)[0].text.replace('\r', '').replace('\n', '').strip() if len(soup.select(selector)) > 0 else ''
+    return soup.select(selector)[0].text.replace('\r', '').replace('\n', '').strip() if len(
+        soup.select(selector)) > 0 else ''
 
 
 def tags_text(selector: str, soup: BeautifulSoup):
@@ -71,3 +78,22 @@ def extract_product_details_from_html(content_html: str, labels_selector: str, v
     labels = tags_text(labels_selector, soup)
     values = tags_text(values_selector, soup)
     return [labels, values]
+
+
+def get_product_urls_for_pages(driver: WebDriver, pages_urls: [], urls_selector: str, selector_timeout, delay):
+    urls = []
+    id = 1
+    logger.debug('Pages urls size: {} '.format(len(pages_urls)))
+    for page_number in range(0, len(pages_urls)):
+        if id % 50 == 0:
+            driver = firefoxService.renew_session(driver)
+        logger.debug('Getting selected urls for page number {}:{} '.format(page_number, pages_urls[page_number]))
+        driver.get(pages_urls[page_number])
+        page_content = get_page_source_until_selector_with_delay(driver,
+                                                                 'img',
+                                                                 selector_timeout,
+                                                                 delay)
+        soup = get_soup_by_content(page_content)
+        urls.extend(attribute_value_for_all_elements(urls_selector, 'href', soup))
+        id += 1
+    return set(urls)

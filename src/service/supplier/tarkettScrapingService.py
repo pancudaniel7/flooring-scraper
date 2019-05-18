@@ -4,7 +4,7 @@ from config import logger
 from model.Product import Product
 from service.collector.collectorService import get_soup_by_content, tag_text, all_href_urls, tags_text
 from service.session import firefoxService
-from service.supplier.seleniumCollectorService import get_page_source_until_selector
+from service.collector.seleniumCollectorService import get_page_source_until_selector
 from service.html import htmlTemplateService
 
 BASE_URL = 'https://residential.tarkett.com'
