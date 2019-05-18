@@ -2,14 +2,12 @@
 import os
 
 from config import initialise_configurations
-from controller import shawController
+from controller import shawController, daltileController
 
 
 def main():
     initialise_configurations()
-    for counter in range(0, 9):
-        shawController.shaw_carpet_collecting(counter)
-    os.system('poweroff')
+    daltileController.daltile_collecting()
 
 
 main()
