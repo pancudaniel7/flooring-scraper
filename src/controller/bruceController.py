@@ -4,7 +4,7 @@ from service.supplier import bruceScrapingService
 from transformer import productToShopifyCsvTransformer
 
 
-def bruce_collecting():
+def collecting():
     products_details = bruceScrapingService.get_products_details()
     shopify_csv_array = [productToShopifyCsvTransformer.product_to_shopify(product) for product in products_details]
     csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,

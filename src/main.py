@@ -1,13 +1,12 @@
 #!/usr/bin/python3
-import os
 
 from config import initialise_configurations
-from controller import shawController, daltileController
+from controller import marazziController
 
 
 def main():
     initialise_configurations()
-    daltileController.daltile_collecting()
+    marazziController.collecting()
 
 
 main()
