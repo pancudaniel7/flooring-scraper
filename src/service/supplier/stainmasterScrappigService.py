@@ -21,8 +21,8 @@ STAINMASTER_CARPET_URL_FILE_NAME = 'stainmaster-carpet-url.txt'
 VENDOR_NAME = 'StainMaster'
 
 TIME_OUT_PRODUCT = 10
-TIME_OUT_URL = 4000
-TIME_DELAY = 4
+TIME_OUT_URL = 5000
+TIME_DELAY = 5
 
 
 def get_products_url(driver: WebDriver, url: str):
