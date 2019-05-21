@@ -1,13 +1,13 @@
 #!/usr/bin/python3
+import os
+
 from config import initialise_configurations
-from controller import tarkettCotroller
+from controller import tarkettController, fuzionController
 
 
 def main():
     initialise_configurations()
-    tarkettCotroller.laminate_collecting()
-    tarkettCotroller.vinyl_collecting()
-    tarkettCotroller.carpet_collecting()
+    fuzionController.collecting()
 
 
 main()

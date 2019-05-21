@@ -66,7 +66,7 @@ def inner_html_str(selector: str, soup: BeautifulSoup):
 
 
 def inner_html_str_index_0(selector: str, soup: BeautifulSoup):
-    return str(soup.select(selector)[0]).replace('\r', '').replace('\n', '')
+    return str(soup.select(selector)[0]).replace('\r', '').replace('\n', '') if len(soup.select(selector)) > 0 else ''
 
 
 def inner_html_str_at_index(selector: str, index: int, soup: BeautifulSoup):
