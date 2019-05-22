@@ -1,12 +1,15 @@
 #!/usr/bin/python3
 
+
 from config import initialise_configurations
-from controller import prestigeController
+from controller import tarkettController
 
 
 def main():
     initialise_configurations()
-    prestigeController.collecting()
+    tarkettController.laminate_collecting()
+    tarkettController.vinyl_collecting()
+    tarkettController.carpet_collecting()
 
 
 main()
