@@ -2,14 +2,12 @@
 
 
 from config import initialise_configurations
-from controller import tarkettController
+from controller import bruceController
 
 
 def main():
     initialise_configurations()
-    tarkettController.laminate_collecting()
-    tarkettController.vinyl_collecting()
-    tarkettController.carpet_collecting()
+    bruceController.collecting()
 
 
 main()

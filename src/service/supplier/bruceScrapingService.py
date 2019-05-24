@@ -72,7 +72,7 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
         title = tag_text('#mainContents > div.titleHeaderTrans > div:nth-child(2) > h1', soup)
         product_type = re.sub(r'^([0-9] [a-z]+\.)', '',
                               tag_text('#mainContents > div.titleHeaderTrans > div:nth-child(2) > h2', soup)).strip()
-        image = attribute_value_element('#hardwoodRoomM > img.rs.swatch.ui-draggable', 'src', soup)
+        image = re.search(r'\((.*)\)', attribute_value_element('#wrap > div.container', 'style', soup)).group(1)
         product_labels = tags_text('#floorOverview > div.col-left > table > tbody tr th', soup)
         product_values = tags_text('#floorOverview > div.col-left > table > tbody tr td', soup)
         details = htmlTemplateService.create_product_template(product_labels, product_values)
