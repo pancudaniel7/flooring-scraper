@@ -1,12 +1,20 @@
-import re
-
 from selenium.webdriver.firefox.webdriver import WebDriver
 
 from config import logger
 from model.Product import Product
 from service.collector import collectorService
 from service.collector.collectorService import get_soup_by_content, tag_text, tags_text, \
-    attribute_value_for_all_elements, attribute_value_element
+    attribute_value_element
+from service.collector.seleniumCollectorService import get_page_source_until_selector_with_delay
+from service.html import htmlTemplateService
+from service.session import firefoxService
+from selenium.webdriver.firefox.webdriver import WebDriver
+
+from config import logger
+from model.Product import Product
+from service.collector import collectorService
+from service.collector.collectorService import get_soup_by_content, tag_text, tags_text, \
+    attribute_value_element
 from service.collector.seleniumCollectorService import get_page_source_until_selector_with_delay
 from service.html import htmlTemplateService
 from service.session import firefoxService
@@ -48,10 +56,10 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
             soup)
 
         labels = [label.replace(':', '').title() for label in tags_text(
-            '#tabs-main-2 > div:nth-child(2) > div.row.info-table-liine > div > table > tbody > tr > td',
+            '#tabs-main-2 > div:nth-child(2) > div.row.info-table-liine > div > table > tbody > tr > td:nth-child(1)',
             soup)]
         values = [value for value in tags_text(
-            '#tabs-main-2 > div:nth-child(2) > div.row.info-table-liine > div > table > tbody > tr > td',
+            '#tabs-main-2 > div:nth-child(2) > div.row.info-table-liine > div > table > tbody > tr > td:nth-child(2)',
             soup)]
         product_details = htmlTemplateService.create_product_template(labels, values)
         tags = ','.join(values) + ',' + collection
