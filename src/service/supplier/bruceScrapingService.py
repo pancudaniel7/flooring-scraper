@@ -41,11 +41,12 @@ def get_hardwood_category_urls(driver: WebDriver, url: str):
 def get_product_urls(driver: WebDriver, category_urls: []):
     product_urls = []
     id = 1
+    logger.debug('Category urls size: {}'.format(len(category_urls)))
     for category_url in category_urls:
         if id % 20 == 0:
             logger.debug('Renew the driver session')
             driver = firefoxService.renew_session(driver)
-        logger.debug('Getting product urls for category url: {}'.format(category_url))
+        logger.debug('Getting product urls for category url{}: {}'.format(str(id), category_url))
         driver.get(category_url)
         page_content = get_page_source_until_selector(driver, '#colors div a', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
@@ -72,7 +73,7 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
         title = tag_text('#mainContents > div.titleHeaderTrans > div:nth-child(2) > h1', soup)
         product_type = re.sub(r'^([0-9] [a-z]+\.)', '',
                               tag_text('#mainContents > div.titleHeaderTrans > div:nth-child(2) > h2', soup)).strip()
-        image = attribute_value_element('#hardwoodRoomM > img.rs.swatch.ui-draggable', 'src', soup)
+        image = re.search(r'\((.*)\)', attribute_value_element('#wrap > div.container', 'style', soup)).group(1)
         product_labels = tags_text('#floorOverview > div.col-left > table > tbody tr th', soup)
         product_values = tags_text('#floorOverview > div.col-left > table > tbody tr td', soup)
         details = htmlTemplateService.create_product_template(product_labels, product_values)

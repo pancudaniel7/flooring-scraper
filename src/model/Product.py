@@ -12,10 +12,8 @@ class Product(object):
 
     def __eq__(self, other):
         return self.title == other.title \
-               and self.code == other.code \
-               and self.type == other.type
+               and self.code == other.code
 
     def __hash__(self):
         return hash(('title', self.title,
-                     'code', self.code,
-                     'type', self.type))
+                     'code', self.code))
