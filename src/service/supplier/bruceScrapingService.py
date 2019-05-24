@@ -41,11 +41,12 @@ def get_hardwood_category_urls(driver: WebDriver, url: str):
 def get_product_urls(driver: WebDriver, category_urls: []):
     product_urls = []
     id = 1
+    logger.debug('Category urls size: {}'.format(len(category_urls)))
     for category_url in category_urls:
         if id % 20 == 0:
             logger.debug('Renew the driver session')
             driver = firefoxService.renew_session(driver)
-        logger.debug('Getting product urls for category url: {}'.format(category_url))
+        logger.debug('Getting product urls for category url{}: {}'.format(str(id), category_url))
         driver.get(category_url)
         page_content = get_page_source_until_selector(driver, '#colors div a', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
