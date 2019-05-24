@@ -96,4 +96,4 @@ def get_product_urls_for_pages(driver: WebDriver, pages_urls: [], urls_selector:
         soup = get_soup_by_content(page_content)
         urls.extend(attribute_value_for_all_elements(urls_selector, 'href', soup))
         id += 1
-    return set(urls)
+    return list(set(urls))

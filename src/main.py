@@ -2,12 +2,12 @@
 
 
 from config import initialise_configurations
-from controller import bruceController
+from controller import urbanController
 
 
 def main():
     initialise_configurations()
-    bruceController.collecting()
+    urbanController.collecting()
 
 
 main()
