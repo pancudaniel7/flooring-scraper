@@ -46,8 +46,8 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
         soup = get_soup_by_content(page_content)
 
         image = attribute_value_element(
-            '#main-content > div.p-detail > div.p-detail-tum > div > div > div.col-xs-12.col-sm-4 > a',
-            'href', soup)
+            '#main-content > div.p-detail > div.p-detail-tum > div > div > div.col-xs-12.col-sm-4 > a > img',
+            'src', soup)
         collection = tag_text(
             '#main-content > div.p-detail > div.p-detail-top > div > div > div > div.col-xs-12.col-sm-12.col-lg-6.col-lg-offset-3.ac > div > p > a',
             soup).title()
