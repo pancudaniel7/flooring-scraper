@@ -2,12 +2,11 @@
 
 
 from config import initialise_configurations
-from controller import urbanController
+from controller import eleganzaController
 
 
 def main():
     initialise_configurations()
-    urbanController.collecting()
-
+    eleganzaController.collecting()
 
 main()
