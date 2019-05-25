@@ -4,7 +4,7 @@ from service.supplier import eleganzaScrappingService
 from transformer import productToShopifyCsvTransformer
 
 
-def collecting():
+def laminated_collecting():
     product_details = eleganzaScrappingService.get_products_details(eleganzaScrappingService.TILE_URLS, 'Tile',
                                                                     url_file_dir() + eleganzaScrappingService.TILE_URL_FILE_NAME)
     csvService.clean_csv_file(csv_template_dir() + TEMPLATE_FILE_NAME,

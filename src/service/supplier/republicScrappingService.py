@@ -6,22 +6,25 @@ from service.session import firefoxService
 from service.html import htmlTemplateService
 from model.Product import Product
 from service.collector.collectorService import get_soup_by_content
-from service.collector.collectorService import all_href_urls, all_images_src, tag_text
+from service.collector.collectorService import all_href_urls, all_images_src, tag_text, href_url_index_0
 from config import logger
-from service.supplier.seleniumCollectorService import get_page_source_until_selector
+from service.collector.seleniumCollectorService import get_page_source_until_selector, \
+    get_page_source_until_selector_with_delay
+from service.url import urlFileService
 
 BASE_URL = 'https://www.republicfloor.com/'
-LAMINATED_URL = BASE_URL + '/republic-products'
-VINYL_1_URL = BASE_URL + '/republic-spc-products'
-VINYL_2_URL = BASE_URL + '/copy-of-pure-spc-lvt'
-REPUBLIC_LAMINATED_CSV_FILE_NAME = 'republic-laminated-template.csv'
-REPUBLIC_VINYL_CSV_FILE_NAME = 'republic-vinyl-template.csv'
+LAMINATED_URL = BASE_URL + 'republic-products'
+VINYL_URL = BASE_URL + 'republic-spc-products'
+LAMINATED_CSV_FILE_NAME = 'republic-laminated-template.csv'
+VINYL_CSV_FILE_NAME = 'republic-vinyl-template.csv'
+LAMINATED_URL_FILE_NAME = 'republic-laminated-url.txt'
+VINYL_URL_FILE_NAME = 'republic-vinyl-url.txt'
 
 VENDOR_NAME = 'Republic Floor'
 
 TIME_OUT_PRODUCT = 4
-TIME_OUT_URL = 600
-TIME_DELAY = 1
+TIME_OUT_URL = 700
+TIME_DELAY = 4
 
 
 def get_category_urls(driver: WebDriver, url: str):
@@ -29,7 +32,10 @@ def get_category_urls(driver: WebDriver, url: str):
     driver.get(url)
     page_content = get_page_source_until_selector(driver, 'img', TIME_OUT_URL)
     soup = get_soup_by_content(page_content)
-    return [url for url in all_href_urls('#c8n6inlineContent > div', soup)]
+    if url.endswith('republic-products'):
+        return [url for url in all_href_urls('#c8n6inlineContent > div', soup)]
+    elif url.endswith('republic-spc-products'):
+        return [url for url in all_href_urls('#z4mmbinlineContent>.wp1>', soup)]
 
 
 def get_collections_urls(driver: WebDriver, category_urls: []):
@@ -74,14 +80,22 @@ def get_all_products_details(driver: WebDriver, collectors: [], type: str):
     id = 0
     for collector in collectors:
         id += 1
-        if id % 30 == 0:
+        if id % 10 == 0:
             driver = firefoxService.renew_session(driver)
         logger.debug(str(id) + ' -Getting products details for product url: ' + collector)
         driver.get(collector)
-        page_content = get_page_source_until_selector(driver, '.wp2link > .wp2img > img', TIME_OUT_URL)
+        page_content = get_page_source_until_selector_with_delay(driver, '.wp2link > .wp2img > img', TIME_DELAY)
         soup = get_soup_by_content(page_content)
+
+        if soup.find('div', {'class': 's_VzqUUImageZoomSkinimageItem_meta'}) is not None:
+            collector = href_url_index_0('.s_VzqUUImageZoomSkinimageItem_meta>', soup)
+            logger.debug(str(id) + ' -Getting products details for product new url: ' + collector)
+            driver.get(collector)
+            page_content = get_page_source_until_selector_with_delay(driver, '.wp2link > .wp2img > img', TIME_DELAY)
+            soup = get_soup_by_content(page_content)
+
         title = tag_text('* > p:nth-child(1) > span:nth-child(1) > span', soup).strip()
-        image = all_images_src('.wp2link > .wp2img', soup)[1]
+        image = re.sub(r'.jpg.*', '.jpg', all_images_src('main>div>div>div>div>div>div>div>div', soup)[0] )
         collection = re.sub(r'\b(?:collection|Collection|COLLECTION)\b', '',
                             tag_text('* > p:nth-child(1) > span:nth-child(2) > span', soup)).replace('(', '').replace(
             ')', '').strip()
@@ -103,15 +117,15 @@ def get_all_products_details(driver: WebDriver, collectors: [], type: str):
     return products
 
 
-def get_products_details(base_url, type: str):
+def get_products_details(base_url, type: str, product_url_file_path: str = ''):
     driver = firefoxService.renew_session()
-    if type == 'Laminated':
+    if urlFileService.is_url_file_empty(product_url_file_path):
         product_category_urls = get_category_urls(driver, base_url)
         product_collection_urls = get_collections_urls(driver, product_category_urls)
+        product_urls = get_product_urls(driver, product_collection_urls)
+        urlFileService.write_url_list_to_file(product_url_file_path, product_urls)
     else:
-        product_collection_urls = get_collections_urls(driver, [base_url])
-    driver = firefoxService.renew_session(driver)
-    product_urls = get_product_urls(driver, product_collection_urls)
+        product_urls = urlFileService.read_url_list_from_file(product_url_file_path)
     driver = firefoxService.renew_session(driver)
     products_details = get_all_products_details(driver, product_urls, type)
     driver.quit()

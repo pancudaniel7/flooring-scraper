@@ -2,11 +2,13 @@
 
 
 from config import initialise_configurations
-from controller import eleganzaController
+from controller import republicController
 
 
 def main():
     initialise_configurations()
-    eleganzaController.collecting()
+    republicController.vinyl_collecting()
+    republicController.laminated_collecting()
+
 
 main()
