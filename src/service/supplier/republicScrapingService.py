@@ -6,7 +6,7 @@ from service.session import firefoxService
 from service.html import htmlTemplateService
 from model.Product import Product
 from service.collector.collectorService import get_soup_by_content
-from service.collector.collectorService import all_href_urls, all_images_src, tag_text
+from service.collector.collectorService import all_href_urls, images_src, tag_text
 from config import logger
 from service.supplier.seleniumCollectorService import get_page_source_until_selector
 
@@ -81,7 +81,7 @@ def get_all_products_details(driver: WebDriver, collectors: [], type: str):
         page_content = get_page_source_until_selector(driver, '.wp2link > .wp2img > img', TIME_OUT_URL)
         soup = get_soup_by_content(page_content)
         title = tag_text('* > p:nth-child(1) > span:nth-child(1) > span', soup).strip()
-        image = all_images_src('.wp2link > .wp2img', soup)[1]
+        image = images_src('.wp2link > .wp2img', soup)[1]
         collection = re.sub(r'\b(?:collection|Collection|COLLECTION)\b', '',
                             tag_text('* > p:nth-child(1) > span:nth-child(2) > span', soup)).replace('(', '').replace(
             ')', '').strip()

@@ -11,7 +11,7 @@ from service.session import firefoxService
 
 BASE_URL = 'https://www.fuzionflooring.com'
 BISTRO_URL = BASE_URL + '/bistro-collection.html'
-FUZION_CSV_FILE_NAME = 'fuzion-hardwood-template.csv'
+FUZION_CSV_FILE_NAME = 'fuzion-template.csv'
 
 TIME_OUT_PRODUCT = 4
 TIME_OUT_URL = 120
@@ -65,7 +65,8 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
 def get_product_details():
     driver = firefoxService.renew_session()
     types_urls = ['https://www.fuzionflooring.com/engineered-hardwood.html',
-                  'https://www.fuzionflooring.com/luxury-vinyl.html', 'https://www.fuzionflooring.com/laminate.html',
+                  'https://www.fuzionflooring.com/luxury-vinyl.html',
+                  'https://www.fuzionflooring.com/laminate.html',
                   'https://www.fuzionflooring.com/carpet-tile.html']
     collection_urls = collectorService.get_product_urls_for_pages(driver, types_urls,
                                                                   'div.imageGallery > div > div > div > div > div > a',
