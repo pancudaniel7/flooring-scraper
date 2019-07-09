@@ -14,10 +14,15 @@ from service.url import urlFileService
 
 BASE_URL = 'https://shawfloors.com'
 HARDWOOD_URL = BASE_URL + '/flooring/hardwood/'
+VINYL_URL = BASE_URL + '/flooring/vinyl/'
+LAMINATE_URL = BASE_URL + '/flooring/laminate/'
 CARPET_URL = BASE_URL + '/flooring/carpet/'
 
 SHAW_HARDWOOD_CSV_FILE_NAME = 'shaw-hardwood-template.csv'
 SHAW_CARPET_CSV_FILE_NAME = 'shaw-carpet-template.csv'
+SHAW_VINYL_CSV_FILE_NAME = 'shaw-vinyl-template.csv'
+SHAW_LAMINATE_CSV_FILE_NAME = 'shaw-laminate-template.csv'
+
 SHAW_CARPET_URL_FILE_NAME = 'shaw-carpet-url.txt'
 
 VENDOR_NAME = 'Shaw Flooring'
@@ -104,8 +109,8 @@ def get_all_products_details(driver: WebDriver, product_urls: []):
     return products
 
 
-def get_products_details(base_url: str, product_urls_number: int = 9999, counter: int = 0,
-                         product_url_file_path: str = ''):
+def get_products_details_with_counter(base_url: str, product_urls_number: int = 9999, counter: int = 0,
+                                      product_url_file_path: str = ''):
     driver = firefoxService.renew_session()
     if urlFileService.is_url_file_empty(product_url_file_path):
         product_category_urls = get_hardwood_category_urls(driver, base_url)
@@ -120,5 +125,16 @@ def get_products_details(base_url: str, product_urls_number: int = 9999, counter
 
     driver = firefoxService.renew_session(driver)
     products_details = get_all_products_details(driver, product_urls[:product_urls_number])
+    driver.quit()
+    return products_details
+
+
+def get_products_details(base_url: str):
+    driver = firefoxService.renew_session()
+    product_category_urls = get_hardwood_category_urls(driver, base_url)
+    product_urls = get_product_urls(driver, product_category_urls)
+    product_urls = list(set(product_urls))
+    driver = firefoxService.renew_session(driver)
+    products_details = get_all_products_details(driver, product_urls)
     driver.quit()
     return products_details

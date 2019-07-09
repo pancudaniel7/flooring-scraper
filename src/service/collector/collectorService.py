@@ -38,7 +38,7 @@ def all_href_urls(selector: str, soup: BeautifulSoup):
     return [a['href'] for a in elements if a.get('href', '') != '']
 
 
-def all_images_src(selector: str, soup: BeautifulSoup):
+def images_src(selector: str, soup: BeautifulSoup):
     images = soup.select(selector + ' img')
     return [img['src'] for img in images]
 

@@ -5,7 +5,7 @@ from config import logger
 from model.Product import Product
 from service.collector.collectorImageService import first_img_url_under_pixel_limit, \
     SHOPIFY_MEGA_PIXELS_IMAGE_RESOLUTION_LIMIT
-from service.collector.collectorService import all_href_urls, get_page_soup, all_images_src, tag_text, \
+from service.collector.collectorService import all_href_urls, get_page_soup, images_src, tag_text, \
     inner_html_str_index_0, tags_text
 
 PRODUCTS_URL = 'http://johnsonhardwood.com/products/'
@@ -25,8 +25,8 @@ def get_all_categories_products_urls(session: Session, url: str):
 
 def get_product_details(session: Session, product_url: str):
     soup = get_page_soup(session, product_url)
-    image = all_images_src('#product-gallery .item.active .image-wrapper', soup)[0]
-    variant_image_urls = all_images_src('#product-gallery .item .image-wrapper', soup)[1:]
+    image = images_src('#product-gallery .item.active .image-wrapper', soup)[0]
+    variant_image_urls = images_src('#product-gallery .item .image-wrapper', soup)[1:]
     variant_image_url = first_img_url_under_pixel_limit(variant_image_urls, SHOPIFY_MEGA_PIXELS_IMAGE_RESOLUTION_LIMIT,
                                                         session)
     title = tag_text('.main .container .header-wrapper h1', soup)
